@@ -1,0 +1,74 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="row">
+	<div class="col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">{{title}}</div>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered" >
+						<thead>
+							<tr>
+								<th class="wd-15p">#SL</th>
+								<th class="wd-15p">Notification For</th>
+								<th class="wd-20p">Message</th>
+								<th class="wd-25p">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for notification in my_notification %}
+							{% if notification.seen_at %}
+							<tr style="background-color:whitesmoke;">
+								<td>{{forloop.counter}}</td>
+								<td>{{notification.notify_for.Property_title}}</td>
+								<td><a href="notifications/notification_details/{{notification.id}}">{{notification.notify_message}}</a></td>
+
+								<td>
+									<span class="btn btn-info" style="font-size: 10px;padding:0px;"><a href="notifications/notification_details/{{notification.id}}" style="color: white;"> view </a></span>
+									<!--<span class="btn btn-danger" style="font-size: 10px;padding:0px;"><a href="notifications/notification_details/{{notification.id}}" style="color: white;">Edit</a></span>-->
+									<!-- <span class="btn btn-danger" style="font-size: 10px;padding:0px;">Delete</span> -->
+								</td>
+							</tr>
+                            {% else %}
+                            <tr>
+								<td>{{forloop.counter}}</td>
+								<td>{{notification.notify_for.Property_title}}</td>
+								<td><a href="notifications/notification_details/{{notification.id}}">{{notification.notify_message}}</a></td>
+
+								<td>
+									<span class="btn btn-info" style="font-size: 10px;padding:0px;"><a href="notifications/notification_details/{{notification.id}}" style="color: white;"> view </a></span>
+									<!--<span class="btn btn-danger" style="font-size: 10px;padding:0px;"><a href="notifications/notification_details/{{notification.id}}" style="color: white;">Edit</a></span>-->
+									<!-- <span class="btn btn-danger" style="font-size: 10px;padding:0px;">Delete</span> -->
+								</td>
+							</tr>
+                            {% endif %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- table-wrapper -->
+		</div>
+		<!-- section-wrapper -->
+	</div>
+</div>
+{% endblock %}
+{% block css %}
+<link href="{% static 'plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+<!-- Data tables -->
+<script src="{% static 'plugins/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
+<!-- Custom Js-->
+<script src="{% static 'js/admin-custom.js' %}"></script>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+{% block carousel_block %}
+    <div class="container">
+        <div class="row" style="margin-top: 7%;margin-left: 5px; margin-bottom:7px;">
+            <div class="btn-group btn-breadcrumb">
+                <a href="#" class="btn btn-danger" style="background-color:#ec1f27;"><i class="glyphicon glyphicon-home"></i></a>
+                <a href="{% url 'home' %}" class="btn btn-success">Home</a>
+                <a href="#" class="btn btn-default">Terms & Conditions</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block body_block %}
+<!-- Section -->
+<!--/Section -->
+<section class="sptb" style="background-color: white;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<ul class="list-unstyled widget-spec  mb-0">
+                    {% for terms_condition in get_terms %}
+                    <li>
+                        <i class="fa fa-check text-success" aria-hidden="true"></i>{{terms_condition.title}}
+                    </li>
+                    {% endfor %}
+                </ul>
+			</div>
+		</div>
+	</div>
+</section>
+<!--/Contact-->
+{% endblock %}
+{% block js %}
+
+{% endblock %}

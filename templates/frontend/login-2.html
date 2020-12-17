@@ -1,0 +1,135 @@
+{% extends 'layouts/base.html' %}
+{% block carousel_block %}
+    {% include 'layouts/slider.html' %}
+{% endblock %}
+{% block body_block %}
+    <!--Login-Section-->
+		<section class="sptb">
+			<div class="container customerpage">
+				<div class="row">
+					<div class="col-lg-5 col-xl-4 col-md-6 d-block mx-auto">
+						<div class="row">
+							<div class="col-xl-12 col-md-12 col-md-12 register-right">
+								<ul class="nav nav-tabs nav-justified mb-5 p-2 border" id="myTab" role="tablist">
+									<li class="nav-item">
+										<a class="nav-link active m-1 border " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Login</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link m-1 border " id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Register</a>
+									</li>
+								</ul>
+								<div class="tab-content" id="myTabContent">
+									<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+										<div class="single-page  w-100  p-0">
+											<div class="wrapper wrapper2">
+												<form id="login" class="card-body" tabindex="500">
+													<h3 class="pb-2">Login</h3>
+													<div class="mail">
+														<input type="email" name="mail">
+														<label>Mail or Username</label>
+													</div>
+													<div class="passwd">
+														<input type="password" name="password">
+														<label>Password</label>
+													</div>
+													<div class="submit">
+														<a class="btn btn-primary btn-block" href="#">Login</a>
+													</div>
+													<p class="mb-2"><a href="{% url 'website:ForgotPassword' %}" >Forgot Password</a></p>
+													<p class="text-dark mb-0">Don't have account?<a href="register.html" class="text-primary ml-1">Sign UP</a></p>
+												</form>
+												<hr class="divider">
+												<div class="p-3 pb-0">
+													<div class="row">
+														<div class="col-6 mb-2">
+															<a href="https://www.facebook.com/" class="btn btn-light btn-block text-left">
+																<img src="../assets/images/svg/facebook.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">Facebook</span>
+															</a>
+														</div>
+														<div class="col-6  mb-2">
+															<a href="https://www.google.com/gmail/" class="btn btn-light btn-block text-left">
+																<img src="../assets/images/svg/google.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">Google</span>
+															</a>
+														</div>
+														<div class="col-6  mb-2">
+															<a href="https://twitter.com/" class="btn btn-light btn-block text-left">
+																<img src="../assets/images/svg/linkedin.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">LinkedIn</span>
+															</a>
+														</div>
+														<div class="col-6  mb-2">
+															<a href="https://twitter.com/" class="btn btn-light btn-block text-left">
+															<img src="../assets/images/svg/twitter.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">Twitter</span>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+										<div class="single-page w-100  p-0">
+											<div class="wrapper wrapper2">
+												<form id="Register" class="card-body" tabindex="500">
+													<h3 class="pb-1">Register</h3>
+													<div class="name">
+														<input type="text" name="name">
+														<label>Name</label>
+													</div>
+													<div class="mail">
+														<input type="email" name="mail">
+														<label>Mail or Username</label>
+													</div>
+													<div class="passwd">
+														<input type="password" name="password">
+														<label>Password</label>
+													</div>
+													<div class="submit">
+														<a class="btn btn-primary btn-block" href="#">Register</a>
+													</div>
+													<p class="text-dark mb-0">Already have an account?<a href="login.html" class="text-primary ml-1">Sign In</a></p>
+												</form>
+												<hr class="divider">
+												<div class="p-3 pb-0">
+													<div class="row">
+														<div class="col-6 mb-2">
+															<a href="https://www.facebook.com/" class="btn btn-light btn-block text-left">
+																<img src="../assets/images/svg/facebook.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">Facebook</span>
+															</a>
+														</div>
+														<div class="col-6  mb-2">
+															<a href="https://www.google.com/gmail/" class="btn btn-light btn-block text-left">
+																<img src="../assets/images/svg/google.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">Google</span>
+															</a>
+														</div>
+														<div class="col-6  mb-2">
+															<a href="https://twitter.com/" class="btn btn-light btn-block text-left">
+																<img src="../assets/images/svg/linkedin.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">LinkedIn</span>
+															</a>
+														</div>
+														<div class="col-6  mb-2">
+															<a href="https://twitter.com/" class="btn btn-light btn-block text-left">
+															<img src="../assets/images/svg/twitter.svg" alt="" class="w-4 h-4 mr-2">
+																<span class="font-weight-bold fs-15">Twitter</span>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--/Login-Section-->
+{% endblock %}

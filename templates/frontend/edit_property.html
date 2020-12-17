@@ -1,0 +1,469 @@
+{% extends 'layouts/base.html' %}
+{% block carousel_block %}
+    {% load static %}
+    <!--<link href="{% static "search/css/main.css" %}" rel="stylesheet" />-->
+    <!--{% include 'layouts/slider.html' %}-->
+    <div class="container">
+        <div class="row" style="margin-top: 7%;margin-left: 5px;">
+            <div class="btn-group btn-breadcrumb">
+                <a href="#" class="btn btn-danger" style="background-color:#ec1f27"><i class="glyphicon glyphicon-home"></i></a>
+                <a href="{% url 'home' %}" class="btn btn-success">Home</a>
+                <a href="{% url 'AddList' %}" class="btn btn-info">Properties</a>
+                <a href="#" class="btn btn-default">{{title}}</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block body_block %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--Section-->
+<section class="sptb">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-8 col-md-12 col-md-12">
+                <div class="card ">
+                    <div class="card-header ">
+                        <h3 class="card-title">Edit Property</h3>
+                    </div>
+                    <form action="{% url 'updateProperty' %}" method="POST"
+                          enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Title</label>
+                                        <input type="text" class="form-control" placeholder="Insert title" name="title" value="{{get_property.Property_title}}" required="">
+                                        <input type="hidden" class="form-control" placeholder="Insert title" name="id" value="{{get_property.id}}" required="">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+        	                        <div class="form-group">
+                                        <label class="form-label text-dark">Property Condition</label>
+                                        <select class="form-control custom-select" name="condition">
+                                            <option value="{{get_property.Condition}}">{{get_property.Condition}}</option>
+                                            {% for x,y in Condition %}
+                                                <option value="{{ x }}">{{ y }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+        	                    </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Tags Type</label>
+                                        <select class="form-control custom-select" name="tag_type" id="property_type_id">
+                                            <option value="{{get_property.Property_tag_type_id}}">{{get_property.Property_tag_type.type_name}}</option>
+                                            {% for property_tags_type in property_tags_types %}
+                                                <option value="{{ property_tags_type.id}}">{{ property_tags_type.type_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Sub Type</label>
+                                        <div id="tag_name">
+                                            <div class="row">
+                                                {% for tag in get_tags %}
+                                                <span style="padding-right:10px;">
+                                                    <div class="custom-control custom-checkbox" id="tag_name">
+                                                        <input type="checkbox" class="custom-control-input" name="tag_name" id="{{tag.tags.tag_name}}" value="{{tag.tags_id}}" checked="">
+                                                        <label class="custom-control-label" for="{{tag.tags.tag_name}}">{{tag.tags.tag_name}}</label>
+                                                    </div>
+                                                </span>
+                                                {% endfor %}
+                                                {% for unchecked_tag in unchecked_tags %}
+                                                <span style="padding-right:10px;">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" name="tag_name" id="{{unchecked_tag.tag_name}}" value="{{unchecked_tag.id}}">
+                                                        <label class="custom-control-label" for="{{unchecked_tag.tag_name}}">{{unchecked_tag.tag_name}}</label>
+                                                    </div>
+                                                </span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Type Of Ad</label>
+                                        <div class="d-md-flex ad-post-details">
+
+                                            {% if get_property.Purpose == '2' %}
+                                            <label class="custom-control custom-radio mb-2 mr-4">
+                                                <input type="radio" class="custom-control-input" name="type_of_ad" value="2" checked="">
+                                                <span class="custom-control-label">Rent</span>
+                                            </label>
+                                            <label class="custom-control custom-radio mb-2 mr-4">
+                                                <input type="radio" class="custom-control-input" name="type_of_ad" value="3"
+                                                >
+                                                <span class="custom-control-label">Sell</span>
+                                            </label>
+                                            {% else %}
+                                            <label class="custom-control custom-radio mb-2 mr-4">
+                                                <input type="radio" class="custom-control-input" name="type_of_ad" value="2"
+                                                >
+                                                <span class="custom-control-label">Rent</span>
+                                            </label>
+                                            <label class="custom-control custom-radio mb-2 mr-4">
+                                                <input type="radio" class="custom-control-input" name="type_of_ad" value="3" checked="">
+                                                <span class="custom-control-label">Sell</span>
+                                            </label>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Size</label>
+                                        <input type="number" class="form-control" placeholder="Insert Size" name="size" value="{{get_property.Size}}" required="">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Floor</label>
+                                        <select class="form-control custom-select" name="Property_lebel">
+                                            <option value="{{get_property.Property_lebel}}">{{get_property.Property_lebel}}</option>
+                                            <option value="0">Select Floor</option>
+                                            {% for i in "x"|rjust:"20" %}
+                                                <option value="G+{{forloop.counter}}">G+{{forloop.counter}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Unit</label>
+                                        <select class="form-control custom-select" name="unit" required="">
+                                            <option value="{{get_property.Unit_id}}">{{get_property.Unit.unit_name}}</option>
+                                            {% for unit in units %}
+                                                <option value="{{ unit.id }}">{{ unit.unit_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Number of Bed Rooms</label>
+                                        <select class="form-control custom-select" name="bed" required>
+                                            <option value="{{get_property.Bed}}">{{get_property.Bed}}</option>
+                                            <option value="0">No. of Bed Room</option>
+                                            {% for i in "x"|rjust:"5" %}
+                                                <option value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Number of Bath Rooms</label>
+                                        <select class="form-control custom-select" name="bath" required>
+                                            <option value="{{get_property.Bath}}">{{get_property.Bath}} </option>
+                                            <option value="0">No. of Bath </option>
+                                            {% for i in "x"|rjust:"5" %}
+                                                <option value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Number of Belcony</label>
+                                        <select class="form-control custom-select" name="Belcony" required>
+                                            <option value="{{get_property.Belcony}}">{{get_property.Belcony}}</option>
+                                            <option value="0">No. of Belcony</option>
+                                            {% for i in "x"|rjust:"5" %}
+                                                <option value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Number of Car Parking</label>
+                                        <select class="form-control custom-select" name="Car_parking" required>
+                                            <option value="{{get_property.Car_parking}}">{{get_property.Car_parking}}</option>
+                                            <option value="0">No. of Car Parking</option>
+                                            {% for i in "x"|rjust:"5" %}
+                                                <option value="{{forloop.counter}}">{{forloop.counter}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Facing</label>
+                                        <select class="form-control custom-select" name="facing">
+                                            <option value="{{get_property.Facing_id}}">{{get_property.Facing.facing_name}}</option>
+                                            {% for facings in facing %}
+                                                <option value="{{ facings.id }}">{{ facings.facing_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Total Floor</label>
+                                        <select class="form-control custom-select" name="totalFloor">
+                                            <option value="{{get_property.totalFloor}}">{{get_property.totalFloor}}</option>
+                                            {% for i in "x"|rjust:"20" %}
+                                                <option value="G+{{forloop.counter}}">G+{{forloop.counter}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-6">
+                                    <label class="form-label text-dark">Property Facilities</label>
+                                    <div class="row">
+                                    {% for facilitie in get_facility %}
+                                    <div class="col-md-6">
+                                        <span>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="facilitie" id="{{facilitie.ficilities.facilitie_name}}" value="{{facilitie.ficilities_id}}" checked="">
+                                                <label class="custom-control-label" for="{{facilitie.ficilities.facilitie_name}}">{{facilitie.ficilities.facilitie_name}}</label>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    {% endfor %}
+                                    {% for unchecked_facility in unchack_facilities %}
+                                    <div class="col-md-6">
+                                        <span>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="facilitie" id="{{unchecked_facility.facilitie_name}}" value="{{unchecked_facility.id}}">
+                                                <label class="custom-control-label" for="{{unchecked_facility.facilitie_name}}">{{unchecked_facility.facilitie_name}}</label>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    {% endfor %}
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Type</label>
+                                        <select class="form-control custom-select" name="condition">
+                                            <option value="{{get_property.Condition}}">{{get_property.Condition}}</option>
+                                            {% for x,y in Condition %}
+                                                <option value="{{ x }}">{{ y }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 style="color: darkred;text-align: center;padding:20px 0px 10px 0px;">Property Location:</h3>
+                            <div class="row">
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">City</label>
+                                        <select class="form-control custom-select" name="city" id="city_id">
+                                            <option value="{{get_property.City_id}}">{{get_property.City.city_name}}</option>
+                                            {% for city in cities %}
+                                                <option value="{{ city.id }}">{{ city.city_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Area</label>
+                                        <select class="form-control custom-select" name="area" id="area_id">
+                                            <option value="{{get_property.Area_id}}">{{get_property.Area}}</option>
+                                            {% for area in areas %}
+                                            <option value="{{area.id}}">{{area.area_name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Road No<span style="color:red;padding-left:5px;">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Road No. " value="{{get_property.Road_no}}" name="Road_no" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">House No/Plot No.<span style="color:red;padding-left:5px;">*</span></label>
+                                        <input type="text" class="form-control" placeholder="House No/Plot No. " value="{{get_property.Holding_no}}"  name="Holding_no" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Address</label>
+                                        <input type="text" class="form-control" placeholder="Block/Sector, Area, City, Country" name="address" value="{{get_property.location}}" required="">
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label text-dark">Property Price</label>
+                                        <input type="number" class="form-control" placeholder="Property Price" name="price" value="{{get_property.Price}}" required="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label text-dark">Description</label>
+                                <textarea class="form-control" name="description" rows="6" placeholder="text here..">{{get_property.Description}}</textarea>
+                            </div>
+                            <div class="p-2 border mb-4 form-group">
+
+                                <label>Upload Thumbnil Images</label>
+                                <input id="demo" type="file" name="Thumbnail"
+                                       accept=".jpg, .png, image/jpeg, image/png">
+                                <img src="/{{get_property.Thumbnail}}" height="50px;">
+                                <!-- <span style="color: darkred">drag selected Image In here</span> -->
+                            </div>
+                            <div class="p-2 border mb-4 form-group">
+
+                                <label>Upload Images</label>
+                                <input id="demo" type="file" name="images" accept=".jpg, .png, image/jpeg, image/png" multiple>
+                                {% for get_image in get_images %}
+                                <!--<img src="/{{get_image.Image}}" height="50px;">-->
+                                <img src="/{{get_image.Image}}" height="90px;" id="image{{get_image.id}}">
+        	                    <p class="fa fa-times-circle" id="{{get_image.id}}" style="position:absolute;margin-left:-15px;color:#dc1e1e;font-size:15px;border:1px solid white;border-radius:50%;cursor:pointer;"></p>
+        	                   <script>
+                                    $('#{{get_image.id}}').click(function(){
+                                        $.ajaxSetup({
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                    }
+                                                });
+                                        var del_pro_image = {{get_image.id}};
+
+                                        console.log(del_pro_image)
+                                        // window.location.replace("/sort_by/"+del_pro_image);
+                                        $.ajax({
+                                            url: "/backend/properties/del_property_image/"+del_pro_image,
+                                            method: 'get',
+                                            success: function(result){
+                                                console.log(result)
+                                                $('#image{{get_image.id}}').hide();
+
+                                            }
+                                        });
+
+                                    });
+                                </script>
+                                {% endfor %}
+                                <!-- <span style="color: darkred">drag selected Image In here</span> -->
+                            </div>
+                            <div class="p-2 border mb-4 form-group">
+
+                                <label>Upload Video</label>
+                                <input id="demo" type="file" name="videos" accept="video/*" multiple>
+                                <!--<span style="color: darkred">drag selected Video In here</span>-->
+                            </div>
+
+                        </div>
+                        <div class="card-footer ">
+                            <input type="submit" class="btn btn-success" value="Add Property">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Benefits Of Ad</h3>
+                    </div>
+                    <div class="card-body pb-2">
+                        <ul class="list-unstyled widget-spec vertical-scroll mb-0">
+                            {% for benifit in benifits %}
+                            <li>
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>{{benifit.title}}
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Terms And Conditions</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled widget-spec  mb-0">
+                            {% for terms_condition in terms_conditions %}
+                            <li>
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>{{terms_condition.title}}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h3 class="card-title">Safety Tips For Buyers</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled widget-spec  mb-0">
+                            {% for safty_tip in safty_tips %}
+                            <li>
+                                <i class="fa fa-check text-success" aria-hidden="true"></i>{{safty_tip.title}}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/Section-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $('#property_type_id').change(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        var tag_type = $('#property_type_id option:selected').val();
+        console.log(tag_type)
+        $.ajax({
+            url: '/get_item_tags/'+tag_type,
+            method: 'get',
+
+            success: function(result){
+                    $("#tag_name").empty()
+                    console.log(result.length)
+                    for ( var i = 0, l = result.length; i < l; i++ ) {
+                        console.log(result[i].tag_name)
+                        $("#tag_name").append('<span class="custom-control custom-checkbox" style="padding-right:10px;"><input type="checkbox" class="custom-control-input" value="'+result[i].id+'" name="tag_name" id="customCheck'+result[i].id+'" ><label class="custom-control-label" for="customCheck'+result[i].id+'">'+result[i].tag_name+'</label></span>');
+                    }
+                }
+        });
+    });
+    $('#city_id').change(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        var city_id = $('#city_id option:selected').val();
+        console.log(city_id)
+        $.ajax({
+            url: '/get_location/'+city_id,
+            method: 'get',
+
+            success: function(result){
+                    console.log(result.length)
+                    $("#area_id")
+                    .find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="">Select Area</option>');
+                    for ( var i = 0 ; i < result.length; i++ ) {
+                        $("#area_id").append(new Option(result[i].area_name, result[i].id));
+                    }
+                }
+        });
+    });
+</script>
+{% endblock %}

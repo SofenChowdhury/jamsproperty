@@ -1,0 +1,167 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<div class="row">
+    {% if followup == True or permissions %}
+	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 ">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Active Properties</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0 font-weight-bold">{{total_properties}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-primary w-100" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-up text-green"></i>Active Properties</div>
+			</div>
+		</div>
+	</div>
+	<div class=" col-sm-12 col-md-6 col-lg-6 col-xl-4">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Agents</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0 font-weight-bold">{{total_agent}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-secondary w-{% widthratio total_agent total_user 100 %}" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-down text-danger"></i>{% widthratio total_agent total_user 100 %}% Agent</div>
+			</div>
+		</div>
+	</div>
+	<div class=" col-sm-12 col-md-6 col-lg-6 col-xl-4">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Sales Property</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0 font-weight-bold">{{total_sell}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-warning w-{% widthratio total_sell total_properties 100 %}" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-down text-danger"></i>{% widthratio total_sell total_properties 100 %}% Sell Property</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 ">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Rent Property</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0  font-weight-bold">{{total_rent}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-info w-{% widthratio total_rent total_properties 100 %}" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-up text-success"></i>{% widthratio total_rent total_properties 100 %}% Rental Property</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 ">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Admin</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0  font-weight-bold">{{total_admin}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-info w-{% widthratio total_admin total_user 100 %}" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-up text-success"></i>{% widthratio total_admin total_user 100 %}% Admins</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 ">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Supper-Admin</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0  font-weight-bold">{{total_supper_admin}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-info w-{% widthratio total_supper_admin total_user 100 %}" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-up text-success"></i>{% widthratio total_supper_admin total_user 100 %}% Supper Admin</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 ">
+		<div class="card" style="overflow-x:scroll;">
+			<!--<div class="card-header">-->
+			<!--	<h3 class="card-title">Visitor Line Chart</h3>-->
+			<!--	<div class="card-options"></div>-->
+			<!--</div>-->
+			<div class="card-body ">
+				<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQs96ETnLUcLiBExkEa86Hm9_cxfp4zAwDTGxYlazggoPDBWjQGu-uOoA3BfGtqE7NEjOi8xxFSoUK_/pubchart?oid=990524001&amp;format=interactive"></iframe>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 ">
+		<div class="card"  style="overflow-x:scroll;">
+			<div class="card-header">
+				<h3 class="card-title">Top Browsers</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+                <iframe style="margin-left:-30px;" width="439.714983713355" height="307.5025" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQs96ETnLUcLiBExkEa86Hm9_cxfp4zAwDTGxYlazggoPDBWjQGu-uOoA3BfGtqE7NEjOi8xxFSoUK_/pubchart?oid=1077538663&amp;format=interactive"></iframe>
+			</div>
+		</div>
+	</div>
+	{% else %}
+	<div class="col-sm-12 col-md-6 col-lg-6 col-xl-4 ">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Agent Code</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0 font-weight-bold">{{my_agent_code.agent_code}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-primary w-100" role="progressbar"></div>
+				</div>
+				<!--<div class=""><i class="fa fa-caret-up text-green"></i>Active Properties</div>-->
+			</div>
+		</div>
+	</div>
+	<div class=" col-sm-12 col-md-6 col-lg-6 col-xl-4">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">My Total Refferers</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0 font-weight-bold">{{my_refferers}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-secondary w-100" role="progressbar"></div>
+				</div>
+				<!--<div class=""><i class="fa fa-caret-down text-danger"></i>{% widthratio total_agent total_user 100 %}% Agent</div>-->
+			</div>
+		</div>
+	</div>
+	<div class=" col-sm-12 col-md-6 col-lg-6 col-xl-4">
+		<div class="card overflow-hidden">
+			<div class="card-header">
+				<h3 class="card-title">Total Posted Properties</h3>
+				<div class="card-options"></div>
+			</div>
+			<div class="card-body ">
+				<h2 class="text-dark  mt-0 font-weight-bold">{{posted_properties}}</h2>
+				<div class="progress progress-sm mt-0 mb-2">
+					<div class="progress-bar bg-warning w-{% widthratio my_approvals posted_properties 100 %}" role="progressbar"></div>
+				</div>
+				<div class=""><i class="fa fa-caret-down text-danger"></i>{% widthratio my_approvals posted_properties 100 %}% Approverd Property</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+{% endblock %}

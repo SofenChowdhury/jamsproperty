@@ -1,0 +1,150 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="row">
+	<div class="col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">{{title}}</div>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered" >
+						<thead>
+							<tr>
+								<th class="wd-15p">#SL</th>
+								<th class="wd-15p">ID</th>
+								<th class="wd-20p">Image</th>
+								<th class="wd-15p">Title</th>
+								<th class="wd-15p">Posted By</th>
+								<th class="wd-10p">Price</th>
+								<th class="wd-25p">Purpose</th>
+								<th class="wd-25p">Status</th>
+								<th class="wd-25p">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for get_proerties in get_proerty %}
+							<tr>
+								<td>{{forloop.counter}}</td>
+								<td>#{{get_proerties.id}}</td>
+								<td><a href="properties/property_details/{{get_proerties.id}}"><img src="/{{get_proerties.Thumbnail}}" style="width: 50px;"></a></td>
+								<td><a href="properties/property_details/{{get_proerties.id}}">{{get_proerties.Property_title}}</a></td>
+								<td>{{get_proerties.Posted_by}}</td>
+								<td>{{get_proerties.Price}} Tk</td>
+								{% if get_proerties.Purpose == '1' %}
+								<td>Buy</td>
+								{% elif get_proerties.Purpose == '2' %}
+								<td>Rent</td>
+								{% else %}
+								<td>Sell</td>
+								{% endif %}
+
+								{% if get_proerties.Status == '1' %}
+								<td>Active</td>
+								{% elif get_proerties.Status == '0' %}
+								<td>Pending</td>
+								{% elif get_proerties.Status == '2' %}
+								<td>Sold Out</td>
+								{% else %}
+								<td>Rented</td>
+								{% endif %}
+								<td>
+									<span class="btn btn-info" style="font-size: 10px;padding:0px;"><a href="properties/property_details/{{get_proerties.id}}" style="color: white;"> view </a></span>
+									<span class="btn btn-success" style="font-size: 10px;padding:0px;"><a href="properties/property_edit/{{get_proerties.id}}" style="color: white;">Edit</a></span>
+									<span class="btn btn-danger" style="font-size: 10px;padding:0px;"><a href="properties/property_delete/{{get_proerties.id}}" style="color: white;" onclick="return confirm('Are you sure you want to delete this?');">Delete</a></span>
+
+									<span class="btn btn-default">
+										<input type="hidden" name="" id="property_id{{get_proerties.id}}" value="{{get_proerties.id}}">
+										{% if get_proerties.Status == '1' %}
+										<select class=""  style="font-size: 13px;padding:0px;height: 20px;" id="action{{get_proerties.id}}">
+											<option value="1"> Active </option>
+											<option value="0"> Panding </option>
+											<option value="2"> Sold Out </option>
+											<option value="3"> Rented </option>
+										</select>
+										{% elif get_proerties.Status == '0' %}
+										<select class=""  style="font-size: 13px;padding:0px;height: 20px;" id="action{{get_proerties.id}}">
+											<option value="0"> Panding </option>
+											<option value="1"> Active </option>
+											<option value="2"> Sold Out </option>
+											<option value="3"> Rented </option>
+										</select>
+										{% elif get_proerties.Status == '2' %}
+										<select class=""  style="font-size: 13px;padding:0px;height: 20px;" id="action{{get_proerties.id}}">
+										    <option value="2"> Sold Out </option>
+											<option value="0"> Panding </option>
+											<option value="1"> Active </option>
+											<option value="3"> Rented </option>
+										</select>
+										{% else %}
+										<select class=""  style="font-size: 13px;padding:0px;height: 20px;" id="action{{get_proerties.id}}">
+											<option value="3"> Rented </option>
+											<option value="2"> Sold Out </option>
+											<option value="0"> Panding </option>
+											<option value="1"> Active </option>
+
+										</select>
+										{% endif %}
+									</span>
+								</td>
+							</tr>
+							<script>
+							    $('#action{{get_proerties.id}}').change(function(){
+							        $.ajaxSetup({
+							                    headers: {
+							                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+							                    }
+							                });
+							        var action = $('#action{{get_proerties.id}} option:selected').val();
+							        var property_id = $('#property_id{{get_proerties.id}}').val();
+                                    var r = confirm("Are you sure!");
+							     //   window.location.replace("/action/"+action+"/"+property_id);
+							        if (r == true) {
+                                        $.ajax({
+                                            url: "/action/"+action+"/"+property_id,
+                                            method: 'get',
+
+                                            success: function(result){
+                                                    // $("#tag_name").empty()
+                                                    // console.log(result.length)
+                                                    // for ( var i = 0, l = result.length; i < l; i++ ) {
+                                                    //     console.log(result[i].tag_name)
+                                                    //     $("#tag_name").append('<div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input" value="'+result[i].id+'" name="tag_name"id="customCheck'+result[i].id+'"><label class="custom-control-label" for="customCheck'+result[i].id+'">'+result[i].tag_name+'</label></div>');
+                                                    // }
+                                                }
+                                        });
+                                    }else {
+                                        location.reload();
+                                    }
+
+
+							    });
+							</script>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- table-wrapper -->
+		</div>
+		<!-- section-wrapper -->
+	</div>
+</div>
+{% endblock %}
+{% block css %}
+<link href="{% static 'plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+<!-- Data tables -->
+<script src="{% static 'plugins/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
+<!-- Custom Js-->
+<script src="{% static 'js/admin-custom.js' %}"></script>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+{% endblock %}

@@ -1,0 +1,580 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+
+    <!-- Title -->
+    <title>Jams Property</title>
+    <!-- ManyChat -->
+    <script src="//widget.manychat.com/101903607952219.js" async="async"></script>
+    <!-- Bootstrap Css -->
+    <link href="{% static "plugins/bootstrap-4.3.1-dist/css/bootstrap.min.css" %}" rel="stylesheet"/>
+
+    <!-- Style css -->
+    <link href="{% static "css/style.css" %}" rel="stylesheet"/>
+
+    <!-- Font-awesome  Css -->
+    <link href="{% static "css/icons.css" %}" rel="stylesheet"/>
+
+    <!--Horizontal Menu-->
+    <link href="{% static "plugins/horizontal-menu/horizontal.css" %}" rel="stylesheet"/>
+
+    <!--Select2 Plugin -->
+    <link href="{% static "plugins/select2/select2.min.css" %}" rel="stylesheet"/>
+
+    <!-- Cookie css -->
+    <!--<link href="{% static "plugins/cookie/cookie.css" %}" rel="stylesheet">-->
+
+    <!-- Owl Theme css-->
+    <link href="{% static "plugins/owl-carousel/owl.carousel.css" %}" rel="stylesheet"/>
+
+    <!-- Custom scroll bar css-->
+    <link href="{% static "plugins/scroll-bar/jquery.mCustomScrollbar.css" %}" rel="stylesheet"/>
+
+    <!-- Color skin-->
+
+
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="{% static "skins/color-skins/color15.css" %}"/>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164693082-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-164693082-1');
+    </script>
+
+
+    <style>
+        .btn-primary{
+            background-color:#ec1f27 !important;
+        }
+        .footer-main{
+            padding-top:1rem !important;
+            padding-bottom:1rem !important;
+        }
+        .btn-circle {
+          width: 30px;
+          height: 30px;
+          text-align: center;
+          padding: 6px 0;
+          font-size: 12px;
+          line-height: 1.428571429;
+          border-radius: 15px;
+        }
+        .btn-circle.btn-lg {
+          width: 50px;
+          height: 50px;
+          padding: 10px 16px;
+          font-size: 18px;
+          line-height: 1.33;
+          border-radius: 25px;
+        }
+        .btn-circle.btn-xl  {
+          width: 56px;
+          height: 56px;
+          padding: 10px 16px;
+          font-size: 24px;
+          line-height: 1.33;
+          border-radius: 35px;
+          margin-right:19px;
+          border:40px;
+        }
+
+        .btn-float{
+            position: fixed;
+            right: 5px;
+            bottom:100px;
+        }
+
+        .btn-lateral{
+            background-color: #008ECF;
+            color: white;
+            margin: 10px;
+        }
+
+        .btn-filter
+        {
+            background-color: #283896;
+            color: #FFF;
+        }
+    </style>
+    {% block css %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+<!--Loader-->
+<!--<div id="global-loader">-->
+<!--    <img src="{% static "images/loader.svg" %}" class="loader-img" alt="">-->
+<!--</div>-->
+
+<!--Topbar-->
+<div class="header-main">
+    <div class="top-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-sm-4 col-7">
+                    <div class="top-bar-left d-flex">
+                        <div class="clearfix">
+                            <ul class="socials">
+                                <li>
+                                    <a class="social-icon text-dark" href="https://www.facebook.com/jamspropertycom" target="_blank"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                <li>
+                                    <a class="social-icon text-dark" href="https://www.youtube.com/channel/UCuno8JW0lkVTbzyxy_tTWeA?view_as=subscriber" target="_blank"><i class="fa fa-youtube"></i></a>
+                                </li>
+                                <li>
+                                    <a class="social-icon text-dark" href="https://www.linkedin.com/company/jamsproperty" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                </li>
+                                <li>
+                                    <a class="social-icon text-dark" href="mailto:info@jamsproperty.com"><i class="fa fa-google-plus"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="clearfix">
+                            <ul class="contact">
+                                <!--<li class="mr-5 d-lg-none">-->
+                                <!--    <a href="#" class="callnumber text-dark"><span><i class="fa fa-phone mr-1"></i>:+8801880088226</span></a>-->
+                                <!--</li>-->
+                                <li class="select-country mr-5">
+                                    <select class="form-control select2-flag-search" data-placeholder="Select Country">
+                                        <option value="BD">Bangladesh</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-sm-8 col-5">
+                    <div class="top-bar-right">
+                        <ul class="custom">
+                            {% if request.user.is_authenticated %}
+                            <li class="dropdown">
+                                <a href="#" class="text-dark" data-toggle="dropdown"><i class="fa fa-home mr-1"></i><span> My Dashboard</span></a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a href="{% url 'dashboard' %}" class="dropdown-item" >
+                                        <i class="dropdown-icon icon icon-user"></i> My Profile
+                                    </a>
+                                    <a href="{% url 'backend' %}" class="dropdown-item" >
+                                        <i class="dropdown-icon icon icon-key"></i> My Panel
+                                    </a>
+                                    <a class="dropdown-item" href="/admin/logout?next=/">
+                                        <i class="dropdown-icon icon icon-power"></i> Log out
+                                    </a>
+                                </div>
+                            </li>
+                            {% else %}
+                            <li>
+                                <a href="{% url 'register' %}" class="text-dark"><i class="fa fa-user mr-1"></i> <span>Register</span></a>
+                            </li>
+                            <li>
+                                <a href="{% url 'dashboard' %}" class="text-dark"><i class="fa fa-sign-in mr-1"></i> <span>Login</span></a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            <!--/Topbar-->
+
+    <!-- Header -->
+    <div class="horizontal-header clearfix ">
+        <div class="container">
+            <a id="horizontal-navtoggle" class="animated-arrow"><span></span></a>
+            <span class="smllogo"><img src="{% static '/images/brand/101.png' %}" width="120" alt="" style="padding: 5px 0px 10px 0px"/></span>
+            <a href="tel:8801880088226" class="callusbtn"><i class="fa fa-phone" aria-hidden="true"></i></a>
+        </div>
+    </div>
+    <!-- /Header -->
+
+    <!-- Horizontal-menu -->
+    <div class="horizontal-main  bg-dark-transparent clearfix" id="horizontal-main">
+        <div class="horizontal-mainwrapper container clearfix">
+            <div style="margin-left: 0" class="desktoplogo">
+                <a href="{% url 'home' %}"><img style="height: 67px;width: 200px; padding: 5px 0px 15px 0px;" src="{% static '/images/brand/101.png' %}" alt=""></a>
+            </div>
+            <div style="margin-left:0;padding: 0.25rem 0;" class="desktoplogo-1">
+                <a href="{% url 'home' %}"><img style="height: 67px;width: 200px; padding: 5px 0px 15px 0px;" src="{% static 'images/brand/101.png' %}"alt=""></a>
+            </div>
+            <!--Nav-->
+            <nav class="horizontalMenu clearfix d-md-flex">
+                <ul class="horizontalMenu-list">
+                    <li aria-haspopup="true" class="active"><a href="{% url 'home' %}" style="font-weight: bold;">Home </a></li>
+
+                    <li aria-haspopup="true"><a href="{% url 'AddList' %}" style="font-weight: bold;">Properties</a></li>
+                    <li aria-haspopup="true"><a href="{% url 'legal_support' %}" style="font-weight: bold;">Legal Support</a></li>
+
+                    <li aria-haspopup="true"><a href="{% url 'financial_support' %}" style="font-weight: bold;">Financial Support </a></li>
+
+                    <li aria-haspopup="true"><a href="{% url 'About' %}" style="font-weight: bold;">About Us </a></li>
+
+                    <li aria-haspopup="true"><a href="{% url 'Contact' %}" style="font-weight: bold;"> Contact Us <span class="hmarrow"></span></a></li>
+
+                    <li aria-haspopup="true" class=" mt-5  mt-lg-0"><span><a class="btn" style="background-color:#ec1f27;color:white;" href="{% url 'property:AdProperty' %}" style="font-weight: bold;">Post Property</a></span></li>
+                </ul>
+
+            </nav>
+            <!--Nav-->
+        </div>
+    </div>
+</div>
+<!--/Horizontal-main -->
+{% block  carousel_block %}
+
+{% endblock %}
+
+{% block body_block %}
+{% endblock %}
+
+
+
+<!-- Newsletter-->
+<section class="sptb bg-white border-top">
+
+    {% block advertisement %}
+    {% endblock %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-xl-6 col-md-12">
+                <div class="sub-newsletter">
+                    <h3 class="mb-2"><i class="fa fa-paper-plane-o mr-2"></i> Subscribe To Our Newsletter</h3>
+                    <p class="mb-0">Subscribe Us To get notifications</p>
+                </div>
+            </div>
+            <div class="col-lg-5 col-xl-6 col-md-12">
+                <form action="{% url 'subscribe_user' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="input-group sub-input mt-1">
+                        <input type="text" class="form-control input-lg " placeholder="Enter your Email" name="email">
+                        <div class="input-group-append ">
+                            <button type="submit" class="btn btn-primary btn-lg br-tr-3  br-br-3" style="background-color:#ec1f27;">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- Modal -->
+    <div class="modal" id="contactUs">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel" style="text-align: center;">inquiry about this product</h3>
+                </div>
+                <div class="modal-body">
+                    {% if request.user.is_authenticated %}
+                    <div class="col-lg-12 col-xl-12 col-md-12">
+                        <form action="{% url 'send_message' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name1" placeholder="Your Name" name="name" value="{{ current_user.username }}" readonly="">
+                                        <!-- <input type="hidden" class="form-control" id="name1" placeholder="Your Name" name="id" value="{{ current_user.id }}" readonly=""> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" placeholder="Email Address" name="email" value="{{ current_user.email }}" readonly="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="test" class="form-control" id="phone" placeholder="Your Phone No." name="phone" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" value="{{properties.Property_title}} #{{properties.id}}" required="" readonly="">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                                    </div>
+                                    <!--<div class="text-left">-->
+                                    <!--    <button type="submit" class="btn btn-primary btn-lg br-tr-3  br-br-3">-->
+                                    <!--        Send Message-->
+                                    <!--    </button>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="row last" style="padding-bottom:20px;">
+                                    <div class="col-md-6">
+                                        <button style="float: left;background-color: #ec1f27;color:white;" class="btn btn-search"  data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button style="float: right;background-color: #43aa8b;color:white;" class="btn btn-search" type="submit">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="col-lg-12 col-xl-12 col-md-12">
+                        <form action="{% url 'send_message' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name1" placeholder="Your Name" name="name" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" placeholder="Your Email Address" name="email" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="test" class="form-control" id="phone" placeholder="Your Phone No." name="phone" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" value="{{properties.Property_title}} #{{properties.id}}" readonly="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                                    </div>
+                                </div>
+                                <div class="row last" style="padding-bottom:20px;">
+                                    <div class="col-md-6">
+                                        <button style="float: left;background-color: #ec1f27;color:white;" class="btn btn-search"  data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button style="float: right;background-color: #43aa8b;color:white;" class="btn btn-search" type="submit">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-float" id="contact">
+        <button data-toggle="modal" data-target="#contactUs" type="button" class="btn btn-default btn-circle btn-xl btn-lateral"><i class="glyphicon glyphicon-envelope"></i></button>
+    </div>
+
+    </div>
+    <div class="modal fade" id="supportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel" style="text-align: center;">Live Support</h3>
+                    </div>
+                <div class="modal-body">
+                    <p>Any kind of support please chat with messenger!</p>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/Newsletter-->
+
+<!--Footer Section-->
+<section>
+    <footer class="bg-dark-purple text-white" style="padding:-10px 0px;">
+        <div class="footer-main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2">
+                        <h4 style="font-size:14px;padding-top:15px;">Quick Links</h4>
+                        <hr class="deep-purple text-primary accent-2 mb-4 mt-0 d-inline-block mx-auto">
+                        <ul class="list-unstyled mb-0">
+                            <li><a href="{% url 'Contact' %}">Contact Us</a></li>
+                            <li><a href="{% url 'About' %}">About Us</a></li>
+                            <li><a href="{% url 'faq' %}">FAQs</a></li>
+                            <li><a href="{% url 'terms_conditions' %}">Terms and Conditions</a></li>
+                            <!--<li><a href="#">Privacy Policy</a></li>-->
+
+                        </ul>
+                    </div>
+                    <div class="col-lg-5 col-md-5 ">
+                        <h4 style="font-size:14px;padding-top:15px;">Contact</h4>
+                        <hr class="deep-purple  text-primary accent-2 mb-4 mt-0 d-inline-block mx-auto">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#"><i class="fa fa-home mr-3 text-primary"></i> Adept N.R Complex, Ka 5/2 (6th
+                                    Floor),<br> <span style="margin-left:28px">Bashandhara Road, Vatara, Baridhara,</span>
+                                    <br> <span style="margin-left:28px">Dhaka-1229, Bangladesh</span></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-envelope mr-3 text-primary"></i>info@jamsproperty.com</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-phone mr-3 text-primary"></i>+8801880088226-31</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-2">
+                        <h4 style="font-size:14px;padding-top:15px;">Follow Us</h4>
+                        <hr class="deep-purple  text-primary accent-2 mb-2 mt-0 d-inline-block mx-auto">
+                        <div class="clearfix"></div>
+                        <ul class="list-unstyled list-inline mt-3">
+                            <li class="list-inline-item" data-toggle="tooltip" title="Facebook" style="margin-top:10px;">
+                                <a href="https://www.facebook.com/jamspropertycom" target="_blank" class="btn-floating btn-sm rgba-white-slight mx-1 waves-effect waves-light">
+                                    <i class="fa fa-facebook bg-facebook"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" data-toggle="tooltip" title="Twitter" style="margin-top:10px;">
+                                <a href="https://twitter.com/JamspropertyC" target="_blank" class="btn-floating btn-sm rgba-white-slight mx-1 waves-effect waves-light">
+                                    <i class="fa fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" data-toggle="tooltip" title="LinkedIn" style="margin-top:10px;">
+                                <a href="https://www.linkedin.com/company/jamsproperty" target="_blank" class="btn-floating btn-sm rgba-white-slight mx-1 waves-effect waves-light">
+                                    <i class="fa fa-linkedin "></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" data-toggle="tooltip" title="google+" style="margin-top:10px;">
+                                <a href="mailto:jamsproperty.com@gmail.com" target="_blank" class="btn-floating btn-sm rgba-white-slight mx-1 waves-effect waves-light">
+                                    <i class="fa fa-google"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item" data-toggle="tooltip" title="YouTube" style="margin-top:10px;">
+                                <a href="https://www.youtube.com/channel/UCuno8JW0lkVTbzyxy_tTWeA?view_as=subscriber" target="_blank" class="btn-floating btn-sm rgba-white-slight mx-1 waves-effect waves-light">
+                                    <i class="fa fa-youtube bg-danger"></i>
+                                </a>
+                            </li>
+
+                            <li class="list-inline-item" data-toggle="tooltip" title="chat with us for live support" style="margin-top:10px;">
+                                <a class="btn-floating btn-sm rgba-white-slight mx-1 waves-effect waves-light" href="#"  data-toggle="modal" data-target="#supportModal">
+                                    <img src="{% static '/support.png' %}" style="border:none;">
+                                </a>
+                            </li>
+                            <li class="list-inline-item" data-toggle="tooltip" title="Android" style="margin-top:10px;">
+                                <a href="#" target="_blank" class="">
+                                    <img src="{% static '/android.png' %}" style="border:none;">
+                                </a>
+                            </li>
+                            <li class="list-inline-item" data-toggle="tooltip" title="Apple" style="margin-top:10px;">
+                                <a href="#" target="_blank" class="">
+                                    <img src="{% static '/apple.png' %}" style="border:none;">
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <h4 style="font-size:14px;padding-top:15px;">Payments</h4>
+                        <hr class="deep-purple  text-primary accent-2 mb-2 mt-3 d-inline-block mx-auto">
+                        <div class="clearfix"></div>
+                        <ul class="footer-payments">
+                            <li><a href="javascript:;">
+                                <i class="fa fa-cc-visa" aria-hidden="true" style="color:white;"></i></a>
+                            </li>
+                            <li><a href="javascript:;"><i class="fa fa-cc-mastercard" aria-hidden="true" style="color:white;"></i></a>
+                            </li>
+                            <li><a href="javascript:;"><i class="fa fa-cc-paypal" aria-hidden="true" style="color:white;"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="bg-dark-purple text-white p-0">
+            <div class="container">
+                <div class="row d-flex">
+                    <div class="col-lg-12 col-sm-12 mt-3 mb-3 text-center ">
+                        Copyright © 2020 <a href="{% url 'home' %}" style="color:#ee5d5d" class="fs-14"><b>jamsproperty.com</b></a>.
+                        Developed by <a href="http://www.whitepaper.tech/" target="_blank" style="color:#ee5d5d" class="fs-14"><b>White Paper</b></a> All rights
+                        reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</section>
+
+<!--/Footer Section-->
+<script>
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<!-- Back to top -->
+<a href="#top" id="back-to-top" style="margin-top:-200px;"><i class="fa fa-rocket"></i></a>
+
+<!-- JQuery js-->
+<script src="{% static "js/vendors/jquery-3.2.1.min.js" %}"></script>
+
+<!-- Bootstrap js -->
+<script src="{% static "plugins/bootstrap-4.3.1-dist/js/popper.min.js" %}"></script>
+<script src="{% static "plugins/bootstrap-4.3.1-dist/js/bootstrap.min.js" %}"></script>
+
+<!--JQuery Sparkline Js-->
+<script src="{% static "js/vendors/jquery.sparkline.min.js" %}"></script>
+
+<!-- Circle Progress Js-->
+<script src="{% static "js/vendors/circle-progress.min.js" %}"></script>
+
+<!-- Star Rating Js-->
+<script src="{% static "plugins/rating/jquery.rating-stars.js" %}"></script>
+
+<!--Counters -->
+<script src="{% static "plugins/counters/counterup.min.js" %}"></script>
+<script src="{% static "plugins/counters/waypoints.min.js" %}"></script>
+<script src="{% static "plugins/counters/numeric-counter.js" %}"></script>
+
+<!--Owl Carousel js -->
+<script src="{% static "plugins/owl-carousel/owl.carousel.js" %}"></script>
+
+<!--Horizontal Menu-->
+<script src="{% static "plugins/horizontal-menu/horizontal.js" %}"></script>
+
+<!--JQuery TouchSwipe js-->
+<script src="{% static "js/jquery.touchSwipe.min.js" %}"></script>
+
+<!--Select2 js -->
+<script src="{% static "plugins/select2/select2.full.min.js" %}"></script>
+<script src="{% static "js/select2.js" %}"></script>
+
+<!-- sticky Js-->
+<script src="{% static "js/sticky.js" %}"></script>
+
+<!-- Cookie js -->
+<!--<script src="{% static "plugins/cookie/jquery.ihavecookies.js" %}"></script>-->
+<!--<script src="{% static "plugins/cookie/cookie.js" %}"></script>-->
+
+<!-- Custom scroll bar Js-->
+<script src="{% static "plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js" %}"></script>
+
+<!--Showmore Js-->
+<!--<script src="{% static "js/jquery.showmore.js" %}"></script>-->
+<!--<script src="{% static "js/showmore.js" %}"></script>-->
+
+<!-- Swipe Js-->
+<script src="{% static "js/swipe.js" %}"></script>
+
+<!-- Scripts Js-->
+<script src="{% static "js/owl-carousel.js" %}"></script>
+
+<!-- Custom Js-->
+<script src="{% static "js/custom.js" %}"></script>
+<script>
+    var x = document.documentElement.clientWidth;
+    console.log(x)
+    if (x > 1000) {
+        $('.btn-float').hide();
+      }else {
+        $('.btn-float').show();
+        $('#back-to-top').remove();
+      }
+</script>
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+
+{% block js %}
+
+{% endblock %}
+</body>
+</html>

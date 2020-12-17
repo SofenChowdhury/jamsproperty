@@ -1,0 +1,34 @@
+<div class="list-group list-group-transparent mb-0 mail-inbox">
+    {% if followup or inbox_permission %}
+	<div class="mt-4 mb-4 ml-4 mr-4 text-center">
+		<!--<a href="{% url 'compose' %}" data-toggle="modal" data-target="#group" class="btn btn-primary btn-lg btn-block">Compose</a>-->
+		<a href="{% url 'compose' %}" class="btn btn-primary btn-lg btn-block">Compose</a>
+	</div>
+	{% else %}
+	<div class="mt-4 mb-4 ml-4 mr-4 text-center">
+		<a href="#" data-toggle="modal" data-target="" class="btn btn-primary btn-lg btn-block">Inbox</a>
+	</div>
+	{% endif %}
+	<a href="{% url 'inbox' %}" class="list-group-item list-group-item-action d-flex align-items-center {% if request.resolver_match.url_name == "inbox" %}active text-white{% endif %}">
+		<span class="icon mr-3"><i class="fe fe-inbox"></i></span>Inbox <span class="ml-auto badge badge-success"></span>
+	</a>
+	<a href="{% url 'sent' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == "sent" %}active text-white{% endif %} d-flex align-items-center">
+		<span class="icon mr-3"><i class="fe fe-send"></i></span>Sent Mail
+	</a>
+	<a href="{% url 'important' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == "important" %}active text-white{% endif %} d-flex align-items-center">
+		<span class="icon mr-3"><i class="fe fe-alert-circle"></i></span>Important <span class="ml-auto badge badge-danger"></span>
+	</a>
+	<a href="{% url 'trash' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == "trash" %}active text-white{% endif %} d-flex align-items-center">
+		<span class="icon mr-3"><i class="fe fe-trash-2"></i></span>Spam
+	</a>
+
+	<!-- <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+		<span class="icon mr-3"><i class="fe fe-star"></i></span>Starred
+	</a>
+	<a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+		<span class="icon mr-3"><i class="fe fe-file"></i></span>Drafts
+	</a>
+	<a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+		<span class="icon mr-3"><i class="fe fe-tag"></i></span>Tags
+	</a> -->
+</div>

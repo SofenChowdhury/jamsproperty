@@ -1,0 +1,237 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<div class="row">
+	<div class="col-md-12 col-lg-3">
+		<div class="card">
+			<div class="card-body p-0 border">
+				{% include 'layouts/mail_layout.html' %}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-9">
+		<div class="card">
+			<div class="card-body p-6 border">
+				<div class="inbox-body">
+					<div class="table-responsive">
+						<div class="row">
+						    <div class="col-md-12">
+						        <!-- Star form compose mail -->
+						        <div class="form-horizontal">
+						            <div class="panel mail-wrapper rounded shadow">
+						                <div class="panel-sub-heading inner-all">
+						                    <div class="pull-left">
+						                        <h3 class="lead no-margin">{{title}}</h3>
+						                    </div>
+						                    <!--<div class="pull-right">-->
+						                        <!--<button class="btn btn-info btn-sm tooltips" data-container="body" data-original-title="Print" type="button" data-toggle="tooltip" data-placement="top" title=""><i class="fa fa-print"></i> </button>-->
+						                    <!--    <button class="btn btn-danger btn-sm tooltips" data-container="body" data-original-title="Trash" data-toggle="tooltip" data-placement="top" title=""><i class="fa fa-trash-o"></i> Delete</button>-->
+						                    <!--    <a href="#mail-compose.html" class="btn btn-success btn-sm"><i class="fa fa-reply"></i> Reply</a>-->
+						                    <!--</div>-->
+						                    <div class="clearfix"></div>
+						                </div><!-- /.panel-sub-heading -->
+						                <div style="background-color:#7d67ad;border-bottom-left-radius: 50px;border-top-right-radius: 50px;border-bottom-right-radius: 50px;padding:20px;margin-bottom:15px;box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);">
+    						                <div class="panel-sub-heading inner-all">
+    						                    <div class="row">
+    						                        <div class="col-md-8 col-sm-8 col-xs-7">
+    						                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..." class="img-circle senden-img" style="border-radius: 50%;border:2px solid lightgray">
+    						                            <span style="color:white;">{{view_email.sender_email}}</span>
+    						                        </div>
+    						                        <div class="col-md-4 col-sm-4 col-xs-5">
+    						                            <p class="pull-right" style="color:white;"> {{view_email.sendTime}}</p>
+    						                        </div>
+    						                    </div>
+    						                </div><!-- /.panel-sub-heading -->
+    						                <div class="panel-body">
+    						                    <div class="view-mail" style="color:white;">
+    						                        {{ view_email.message |safe}}
+    						                    </div>
+    						                </div><!-- /.panel-body -->
+						                </div>
+
+                                        {% for replay in replay_email %}
+						                <div style="background-color:#efeded;border-top-left-radius: 50px;border-bottom-left-radius: 50px;border-top-right-radius: 50px;padding:20px;margin-bottom:15px;box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);">
+    						                <div class="panel-sub-heading inner-all">
+    						                    <div class="row">
+    						                        <div class="col-md-8 col-sm-8 col-xs-7">
+    						                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="..." class="img-circle senden-img" style="border-radius: 50%;border:2px solid lightgray">
+    						                            <span>{{replay.sender_email}}</span>
+    						                        </div>
+    						                        <div class="col-md-4 col-sm-4 col-xs-5">
+    						                            <p class="pull-right"> {{replay.sendTime}}</p>
+    						                        </div>
+    						                    </div>
+    						                </div><!-- /.panel-sub-heading -->
+    						                <div class="panel-body">
+    						                    <div class="view-mail">
+    						                        {{ replay.message |safe}}
+    						                    </div>
+    						                </div><!-- /.panel-body -->
+						                </div>
+                                        {% endfor %}
+
+
+
+						                <div class="panel-footer">
+						                    <div class="pull-right">
+						                        <a href="#"data-toggle="modal" data-target="#replay" class="btn btn-success btn-sm"><i class="fa fa-reply"></i> Reply</a>
+						                        <!--<a href="/backend/inbox/delete/{{view_email.id}}" class="btn btn-danger btn-sm tooltips"><i class="fa fa-trash-o"></i> Delete</a>-->
+						                        <!--<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-arrow-right"></i> Forward</button>-->
+						                        <!--<button class="btn btn-info btn-sm tooltips" data-container="body" data-original-title="Print" type="button" data-toggle="tooltip" data-placement="top" title=""><i class="fa fa-print"></i> </button>-->
+						                        <!--<button class="btn btn-danger btn-sm tooltips" data-container="body" data-original-title="Trash" data-toggle="tooltip" data-placement="top" title=""><i class="fa fa-trash-o"></i> Delete </button>-->
+						                    </div>
+						                    <div class="clearfix"></div>
+						                </div><!-- /.panel-footer -->
+						            </div><!-- /.panel -->
+						        </div>
+						        <!--/ End form compose mail -->
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Popup Message Modal-->
+		<div id="replay" class="modal fade">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title">Send Mail</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{% url 'replayEmail' %}" method="POST" enctype="multipart/form-data">
+	            			{% csrf_token %}
+
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Send to</label>
+									<div class="col-sm-9">
+										<div class=" w-100">
+										    <input type="hidden" name="sender" value="{{current_user.email}}">
+										    <input type="hidden" name="email_id" value="{{view_email.id}}">
+											<input type="email" class="form-control" name="send_to" value="{{view_email.sender_email}}" readonly>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Subject</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" placeholder="Email Subject"  value="{{view_email.subject}}" name="subject">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row ">
+									<label class="col-sm-3">Message</label>
+									<div class="col-sm-9">
+										<textarea class="form-control" name="message" placeholder="Enter Description" rows="12"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="btn-list mt-4 text-right">
+								<button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;">Cancel</button>
+								<button type="submit" class="btn btn-primary btn-space" style="background-color:#43aa8b;">Send message</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="group" class="modal fade">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title">Send Mail</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{% url 'sendEmail' %}" method="POST" enctype="multipart/form-data">
+	            			{% csrf_token %}
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Sender</label>
+									<div class="col-sm-9">
+										<!--{{current_user.email}}-->
+										<input type="hidden" name="sender" value="{{current_user.email}}">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Recipients Groups</label>
+									<div class="col-sm-9">
+										<div class=" w-100">
+											<select class="form-control select2 " data-placeholder="Choose Browser" name="send_to" multiple>
+												<option value="" selected>All Subscribers</option>
+												{% for get_user in get_users %}
+												<option value="{{get_user.email}}">{{get_user.username}}</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Subject</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" placeholder="Email Subject" name="subject">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row ">
+									<label class="col-sm-3">Message</label>
+									<div class="col-sm-9">
+										<textarea class="form-control" name="message" placeholder="Enter Description" rows="12"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="btn-list mt-4 text-right">
+								<button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;">Cancel</button>
+								<button type="submit" class="btn btn-primary btn-space" style="background-color:#43aa8b;">Send message</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block css %}
+<style>
+.senden-img{
+    width:50px;
+    height:50px;
+}
+
+.panel .panel-heading .panel-title {
+    padding: 10px;
+    font-size: 17px;
+}
+
+
+</style>
+<link href="{% static 'plugins/wysiwyag/richtext.css' %}" rel="stylesheet" />
+<!-- Select2 Plugin -->
+<link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+<!-- WYSIWYG Editor js -->
+<script src="{% static 'plugins/wysiwyag/jquery.richtext.js' %}"></script>
+<script src="{% static 'js/formeditor.js' %}"></script>
+<!-- Custom scroll bar Js-->
+<script src="{% static 'plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+
+{% endblock %}

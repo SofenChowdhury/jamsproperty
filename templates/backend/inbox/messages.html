@@ -1,0 +1,199 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="row">
+	<div class="col-md-12 col-lg-3">
+		<div class="card">
+			<div class="card-body p-0 border">
+				{% include 'layouts/mail_layout.html' %}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-9">
+		<div class="card">
+			<div class="card-body p-6 border">
+				<div class="inbox-body">
+					<form action="{% url 'Inboxaction' %}" method="POST" enctype="multipart/form-data" onSubmit="return confirm('Are you sure you want to do this ?');">
+                            {% csrf_token %}
+						<div class="mail-option">
+						    {% if followup or inbox_permission %}
+							<div class="btn-group hidden-phone">
+								<select class="form-control" name="action" id="action">
+								    <option value="">Select Action</option>
+								    <option value="2"><i class="fa fa-star"></i> Important</option>
+								    <option value="1"><i class="fa fa-ban"></i> Spam</option>
+								    <option value="3"><i class="fa fa-trash-o"></i> Delete</option>
+								</select>
+							</div>
+							<div class="btn-group">
+								<button class="btn btn-danger" style="background-color:#ec1f27;">
+									<i class=" fa fa-send"> Send </i>
+								</button>
+							</div>
+							{% else %}
+                            <h3>Hi {{current_user.username}}</h3>
+							{% endif %}
+						</div>
+						<div class="table-responsive">
+							<table class="table table-inbox table-hover" id="example">
+							    <thead>
+        							<tr>
+        								<th class="wd-15p">#ID</th>
+        								<th class="wd-15p">Sender</th>
+        								<th class="wd-15p">Message</th>
+        								<th class="wd-25p">Time</th>
+        							</tr>
+        						</thead>
+								<tbody>
+									{% for get_email in get_emails %}
+									{% if get_email.seenTime %}
+									<tr class="read">
+										<td class="inbox-small-cells">
+											<input type="checkbox" class="mail-checkbox" name="mail_id" value="{{get_email.id}}">
+										</td>
+										<!--<td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>-->
+										<td class="view-message  dont-show"><a href="/backend/inbox/viewEmail/{{get_email.id}}">{{get_email.sender_email}}</a></td>
+										<!-- <td class="view-message ">{{get_email.message| linebreaks |slice:"0:30"}}</td> -->
+										<td class="view-message "><a href="/backend/inbox/viewEmail/{{get_email.id}}">{{get_email.subject |slice:"0:30"}}</a></td>
+										<td class="view-message  text-right">{{get_email.sendTime}}</td>
+									</tr>
+									{% else %}
+									<tr class="unread">
+										<td class="inbox-small-cells">
+											<input type="checkbox" class="mail-checkbox" name="mail_id" value="{{get_email.id}}">
+										</td>
+										<!--<td class="inbox-small-cells"><i class="fa fa-star inbox-started"></i></td>-->
+										<td class="view-message  dont-show"><a href="/backend/inbox/viewEmail/{{get_email.id}}">{{get_email.sender_email}}</a></td>
+										<!-- <td class="view-message ">{{get_email.message| linebreaks |slice:"0:30"}}</td> -->
+										<td class="view-message "><a href="/backend/inbox/viewEmail/{{get_email.id}}">{{get_email.subject |slice:"0:30"}}</a></td>
+										<td class="view-message  text-right">{{get_email.sendTime}}</td>
+									</tr>
+									{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!--<ul class="pagination mt-3">-->
+		<!--	<li class="page-item page-prev disabled">-->
+		<!--		<a class="page-link" href="#" tabindex="-1">Prev</a>-->
+		<!--	</li>-->
+		<!--	<li class="page-item active"><a class="page-link" href="#">1</a></li>-->
+		<!--	<li class="page-item"><a class="page-link" href="#">2</a></li>-->
+		<!--	<li class="page-item"><a class="page-link" href="#">3</a></li>-->
+		<!--	<li class="page-item"><a class="page-link" href="#">4</a></li>-->
+		<!--	<li class="page-item"><a class="page-link" href="#">5</a></li>-->
+		<!--	<li class="page-item page-next">-->
+		<!--		<a class="page-link" href="#">Next</a>-->
+		<!--	</li>-->
+		<!--</ul>-->
+		<!-- Popup Message Modal-->
+		<div id="group" class="modal fade">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title">Send Mail</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{% url 'sendEmail' %}" method="POST" enctype="multipart/form-data">
+	            			{% csrf_token %}
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Sender</label>
+									<div class="col-sm-9">
+										<!--{{current_user.email}}-->
+										<input type="hidden" name="sender" value="{{current_user.email}}">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Recipients Groups</label>
+									<div class="col-sm-9">
+										<div class=" w-100">
+										    <!--<select id="country" name="send_to" class="form-control select2-flag-search" data-placeholder="Choose Email"  multiple>-->
+											<select class="form-control select2 " data-placeholder="Choose Email" name="send_to" multiple>
+												<option value="" selected>All Subscribers</option>
+												{% for get_user in get_users %}
+    												{% if get_user.email %}
+    												    <option value="{{get_user.email}}">{{get_user.email}}</option>
+    												{% endif %}
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row align-items-center">
+									<label class="col-sm-3">Subject</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" placeholder="Email Subject" name="subject">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row ">
+									<label class="col-sm-3">Message</label>
+									<div class="col-sm-9">
+										<!--<textarea class="content" name="message" placeholder="Enter Description"></textarea>-->
+										<textarea class="form-control" name="message" placeholder="Enter Description" rows="12"></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="btn-list mt-4 text-right">
+								<button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;">Cancel</button>
+								<button type="submit" class="btn btn-primary btn-space" style="background-color:#43aa8b;">Send message</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <script type="text/javascript">
+	$('#action').change(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        $("#checkboxes").children("input:checked")
+    });
+</script> -->
+
+<script>
+
+</script>
+
+
+
+{% endblock %}
+{% block css %}
+<link href="{% static 'plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/wysiwyag/richtext.css' %}" rel="stylesheet" />
+<!-- Select2 Plugin -->
+<link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+<!-- Data tables -->
+<script src="{% static 'plugins/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
+<!-- Custom Js-->
+<script src="{% static 'plugins/wysiwyag/jquery.richtext.js' %}"></script>
+<script src="{% static 'js/formeditor.js' %}"></script>
+<!-- Custom scroll bar Js-->
+<script src="{% static 'plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+
+{% endblock %}

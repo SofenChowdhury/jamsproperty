@@ -1,0 +1,63 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="row">
+	<div class="col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">{{title}}</div>
+			</div>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered" >
+						<thead>
+							<tr>
+								<th class="wd-15p">#SL</th>
+								<th class="wd-15p">User</th>
+								<th class="wd-15p">Property Code</th>
+								<th class="wd-15p">Property</th>
+								<th class="wd-25p">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for wish in my_wish %}
+							<tr>
+								<td>{{forloop.counter}}</td>
+								<td>{{wish.user.username}}</td>
+								<td>#0{{wish.property.id}}</td>
+								<td>
+								    <a href="/ADDetails/{{ wish.property.id }}">{{wish.property}}</a>
+								</td>
+								<td>
+									<span class="btn btn-danger" style="font-size: 10px;padding:0px;"><a href="/wish-list/wish/{{wish.id}}" style="color: white;" onclick="return confirm('Are you sure you want to delete this ?');">delete</a></span>
+									<span class="btn btn-success" style="font-size: 10px;padding:0px;"><a href="/ADDetails/{{ wish.property.id }}" style="color: white;">View</a></span>
+
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- table-wrapper -->
+		</div>
+		<!-- section-wrapper -->
+	</div>
+</div>
+{% endblock %}
+{% block css %}
+<link href="{% static 'plugins/datatable/dataTables.bootstrap4.min.css' %}" rel="stylesheet" />
+<link href="{% static 'plugins/datatable/jquery.dataTables.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+<!-- Data tables -->
+<script src="{% static 'plugins/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatable/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'js/datatable.js' %}"></script>
+<!-- Custom Js-->
+<script src="{% static 'js/admin-custom.js' %}"></script>
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+{% endblock %}

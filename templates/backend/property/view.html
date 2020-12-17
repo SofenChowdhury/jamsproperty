@@ -1,0 +1,290 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+{% load humanize %}
+<style>
+
+	table tr td{
+		width: 30%;
+		padding:5px 10px 5px 10px;
+	}
+	.water_mark{
+		background-color: rgb(0,0,0,1.2);
+		width: 30%;
+		z-index: 99999;
+		margin-top: -80px;
+		padding-left: 30px;
+		padding-bottom: 30px;
+	}
+</style>
+<div class="row">
+	<div class="col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">{{title}}</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-xl-7 col-lg-7 col-md-12">
+						<!--Classified Description-->
+						<div class="overflow-hidden">
+						    {% if properties.Status == '2' %}
+        					<div class="ribbon ribbon-top-right text-danger"><span class="bg-danger">Sold Out</span></div>
+        					{% elif properties.Status == '3' %}
+        					<div class="ribbon ribbon-top-right text-warning"><span class="bg-warning">Rented</span></div>
+                            {% endif %}
+							<div class="card-body">
+								<div class="item-det mb-4">
+									<a href="#" class="text-dark"><h3 class="" style="font-size:19px; letter-spacing:1.2px;">{{properties.Property_title}}</h3></a>
+									<ul class="d-flex">
+										<li class="mr-2"><a href="#" class="icons"><i class="icon icon-briefcase text-muted mr-1"></i> {{properties.Category}}</a></li>
+										<li class="mr-2"><a href="#" class="icons"><i class="icon icon-location-pin text-muted mr-1"></i>{{ properties.location }}</a></li>
+										<li class="mr-2"><a href="#" class="icons"><i class="icon icon-calendar text-muted mr-1"></i> {{properties.Posted_time|naturaltime}}</a></li>
+									</ul>
+								</div>
+								<div class="product-slider">
+									<div id="carousel" class="carousel slide" data-ride="carousel">
+										<div class="arrow-ribbon2 bg-primary"><span style="font-size: 20px;">{{properties.Price}} Tk</span></div>
+										<div class="carousel-inner">
+											<div class="carousel-item active">
+												<img src="/{{active_image.Image}}" alt="img" style="height:400px; width:100%;">
+												<div class="water_mark">
+													<img src="{% static '/images/brand/101.png' %}" style="height:400;width: 100%;">
+												</div>
+											</div>
+											{% for pro_image in property_image %}
+											<div class="carousel-item">
+												<img src="/{{pro_image.Image}}" alt="img" style="height:400px; width:100%;">
+												<div class="water_mark">
+													<img src="{% static '/images/brand/101.png' %}" style="width: 80%;">
+												</div>
+											</div>
+											{% endfor %}
+										</div>
+										<a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+											<i class="fa fa-angle-left" aria-hidden="true"></i>
+										</a>
+										<a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+											<i class="fa fa-angle-right" aria-hidden="true"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-5 col-lg-5 col-md-12">
+						<div class="border-0">
+							<div class="wideget-user-tab wideget-user-tab3">
+								<div class="tab-menu-heading">
+									<div class="tabs-menu1">
+										<ul class="nav">
+											<li class=""><a href="#tab-1" class="active" data-toggle="tab">Overview</a></li>
+											<li><a href="#tab-3" data-toggle="tab" class="">Facilities</a></li>
+											<li><a href="#tab-4" data-toggle="tab" class="">Info</a></li>
+											<li><a href="#tab-5" data-toggle="tab" class="">Video</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="tab-content border-0 p-5 bg-white details-tab-content">
+								<div class="tab-pane active" id="tab-1">
+									<h3 class="card-title mb-3 font-weight-semibold">Description</h3>
+									<div class="mb-4">
+										<p>{{properties.Description}}</p>
+									</div>
+									<h4 class="mb-4">Specifications</h4>
+									<div class="row">
+										<div class="col-xl-12 col-md-12">
+											<div class="table-responsive" style="overflow-x:hidden;">
+												<div class="row">
+													<div class="col-md-6">
+														<table class="table-bordered border-top mb-0">
+															<tbody>
+																<tr>
+																	<td>Type</td>
+																	<td><span class="font-weight-bold">{{properties.Category}}</span></td>
+																</tr>
+																<tr>
+																	<td>Listed By </td>
+																	<td><span class="font-weight-bold">{{properties.Posted_by}}</span></td>
+																</tr>
+																<tr>
+																	<td>Price </td>
+																	<td>
+																		<span class="font-weight-bold" style="color: tomato;font-weight: bold;">{{properties.Price}} Tk</span>
+																	</td>
+																</tr>
+																<tr>
+																	<td>BedRooms </td>
+																	<td><span class="font-weight-bold">{{properties.Bed}}</span></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="col-md-6">
+														<table class='table-bordered border-top mb-0'>
+															<tbody>
+																<tr>
+																	<td>BathRooms</td>
+																	<td><span class="font-weight-bold">{{properties.Bath}}</span></td>
+																</tr>
+																<tr>
+																	<td>Belcony</td>
+																	<td><span class="font-weight-bold">{{properties.Belcony}}</span></td>
+																</tr>
+																<tr>
+																	<td>Facing </td>
+																	<td><span class="font-weight-bold">{{properties.Facing}}</span></td>
+																</tr>
+																<tr>
+																	<td>Property Label </td>
+																	<td><span class="font-weight-bold">{{properties.Property_lebel}}</span></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-3">
+									<div class="row">
+										<div class="col-xl-12 col-md-12">
+											<div class="table-responsive">
+												<table class="table-bordered border-top mb-0">
+													<tbody>
+														{% for Fecility in Fecilities %}
+		    												{% for pro_fecility in property_fecilities%}
+		        												{% if Fecility.id == pro_fecility.ficilities_id %}
+		        												<tr>
+		        													<td>{{Fecility.facilitie_name}}</td>
+		        													<td><i class="fa fa-check-circle text-success"></i></td>
+		        												</tr>
+		        												{% endif %}
+		    												{% endfor %}
+														{% endfor %}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-4">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="table-responsive" style="overflow-x: hidden;">
+												<div class="row">
+													<div class="col-md-12">
+														<table class="table-bordered border-top mb-0">
+															<tbody>
+																<tr>
+																	<td>City</td>
+																	<td><span class="font-weight-bold">{{ properties.City }}</span></td>
+																</tr>
+																<tr>
+																	<td>Area</td>
+																	<td><span class="font-weight-bold"> {{ properties.Area }}, {{ properties.location }}</span></td>
+																</tr>
+																<tr>
+																	<td>Type</td>
+																	<td><span class="font-weight-bold">{{properties.Category}}</span></td>
+																</tr>
+																<tr>
+																	<td>Bathrooms</td>
+																	<td><span class="font-weight-bold">{{properties.Bath}}</span></td>
+																</tr>
+																<tr>
+																	<td>Carpet Area</td>
+																	<td><span class="font-weight-bold">{{properties.Size}} {{properties.Unit}}</span></td>
+																</tr>
+																<tr>
+																	<td>Property Tags</td>
+																	<td>
+																		{% for property_tag in get_property_tags %}
+																		<p class="font-weight-bold text-center" style="background-color: tomato;padding: 5px;line-height: 1; color:white;margin-bottom: 2px;border-radius: 20px;">{{property_tag.tags}}</p>
+																		{% endfor %}
+																	</td>
+																</tr>
+																<tr>
+																	<td>Facing</td>
+																	<td><span class="font-weight-bold">{{properties.Facing}}</span></td>
+																</tr>
+																<tr>
+																	<td>Bed Rooms</td>
+																	<td><span class="font-weight-bold">{{properties.Bed}}</span></td>
+																</tr>
+																<!-- <tr>
+																	<td>Balcony</td>
+																	<td><span class="font-weight-bold">2</span></td>
+																</tr> -->
+																<tr>
+																	<td>Car Parking</td>
+																	<td><span class="font-weight-bold">{{properties.Car_parking}}</span></td>
+																</tr>
+																{% for pro_fecilities in property_fecilities %}
+																<tr>
+																	<td>{{pro_fecilities.ficilities.facilitie_name}}</td>
+																	<td><span class="font-weight-bold">Yes</span></td>
+																</tr>
+																{% endfor %}
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane" id="tab-5">
+									<ul class="list-unstyled video-list-thumbs row ">
+										<li class="mb-0">
+											<a data-toggle="modal" data-target="#homeVideo">
+											    {% if active_video.property_video %}
+												<video controls class="img-responsive">
+													<source src="../{{active_video.property_video}}" type="video/mp4">
+													<source src="../{{active_video.property_video}}" type="video/ogg">
+												</video>
+												{% else %}
+												<h4 style="color:tomato;">No Video Uploaded ....... </h4>
+												{% endif %}
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="pt-4 pb-4 pl-5 pr-5 border-top bg-white">
+								<div class="list-id">
+									<div class="row">
+										<!--<div class="col">-->
+										<!--	<a class="mb-0">Classified ID : #8256358</a>-->
+										<!--</div>-->
+										<div class="col col-auto">
+											Posted By <a class="mb-0 font-weight-bold"><span style="color: tomato">{{properties.Posted_by}}</span></a> - {{properties.Posted_time}}
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="card-footer bg-white details-tab">
+								<div class="icons">
+									<a href="#" class="btn btn-info icons"><i class="icon icon-share mr-1"></i> Share Ad</a>
+									<a href="#" class="btn btn-primary icons"><i class="icon icon-heart  mr-1"></i> 678</a>
+									<a href="#" class="btn btn-secondary icons"><i class="icon icon-printer  mr-1"></i> Print</a>
+								</div>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- table-wrapper -->
+		</div>
+		<!-- section-wrapper -->
+	</div>
+</div>
+{% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block js %}
+
+{% endblock %}

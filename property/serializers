@@ -1,0 +1,10 @@
+from rest_framework import serializers
+from .models import PropertyTag
+
+class PropertyTagSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = PropertyTag
+		# fields = ('tag_name',)
+		fields = '__all__'
+		

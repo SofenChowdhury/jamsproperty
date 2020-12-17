@@ -1,0 +1,45 @@
+{% extends "layouts/base.html" %}
+{% block carousel_block %}
+    <section>
+        <div class="container">
+            <div class="row" style="margin-top: 7%;margin-left: 5px; margin-bottom:7px;">
+                <div class="btn-group btn-breadcrumb">
+                    <a href="#" class="btn btn-danger" style="background-color:#ec1f27;"><i class="glyphicon glyphicon-home"></i></a>
+                    <a href="{% url 'home' %}" class="btn btn-success">Home</a>
+                    <a href="{% url 'AddList' %}" class="btn btn-info">Properties</a>
+                    <a href="#" class="btn btn-default">{{title}}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block body_block %}
+
+<!--Faq section-->
+<section class="sptb">
+    <div class="container">
+        {% for get_faq in get_faqs  %}
+        <div class="panel-group1" id="accordion{{get_faq.id}}">
+
+            <div class="panel panel-default mb-4 border p-0">
+                <div class="panel-heading1">
+                    <h4 class="panel-title1">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion{{get_faq.id}}"
+                           href="#collapseone{{get_faq.id}}" aria-expanded="false">{{forloop.counter}}. {{get_faq.title}} </a>
+                    </h4>
+                </div>
+                <div id="collapseone{{get_faq.id}}" class="panel-collapse collapse active" role="tabpanel" aria-expanded="false">
+                    <div class="panel-body bg-white">
+                        <p>{{get_faq.description}}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<!--/Faq section-->
+
+
+{% endblock %}

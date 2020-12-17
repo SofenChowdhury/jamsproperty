@@ -1,0 +1,944 @@
+{% extends "layouts/base.html" %}
+{% block carousel_block %}
+{% load static %}
+{% load humanize %}
+    {% if poopupAdd %}
+    <div id="myModal" class="modal fade">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content " style="width:182%;margin-left:-39%;background-color:transparent;border:none;">
+					<!--<div class="modal-header">-->
+					<!--	<h5 class="modal-title" id="exampleModalLabel">Login</h5>-->
+					<!--	<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+					<!--		<span aria-hidden="true">×</span>-->
+					<!--	</button>-->
+					<!--</div>-->
+					<div class="modal-body">
+					    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+						<div class="single-page customerpage " >
+							<div class="wrapper wrapper2 box-shadow-0">
+
+                                <img src="/{{poopupAdd.ad_image}}" style="width:100%;">
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+    <!--carousel Section-->
+
+    <link href="{% static "search/css/main.css" %}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+
+        .text-muted{
+            color:black !important;
+            font-weight:bold;
+        }
+        h2{
+            font-size:20px;
+            font-weight:bold;
+            color:#ec1f27;
+            font-family: sans-serif;
+        }
+        .owl-carousel{
+            margin-top:-25px;
+        }
+        .form-control{
+            color:#969595 !important;
+        }
+        .tagType li:hover{
+            background-color: #ec1f27;
+            cursor: pointer;
+            color: white;
+        }
+        .nav_active{
+            background-color:#4a4747 !important;
+
+        }
+    /*Auto complete*/
+    .autocomplete {
+      position: relative;
+      display: inline-block;
+    }
+
+    input {
+      border: 1px solid transparent;
+      background-color: #f1f1f1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    input[type=text] {
+      background-color: #f1f1f1;
+      width: 100%;
+    }
+
+    input[type=submit] {
+      background-color: DodgerBlue;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .autocomplete-items {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+
+    .autocomplete-items div {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #fff;
+      border-bottom: 1px solid #d4d4d4;
+    }
+
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+      background-color: #e9e9e9;
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+      background-color: DodgerBlue !important;
+      color: #ffffff;
+    }
+    .autocomplete-items{
+        max-height:200px;
+        overflow-y : scroll;
+    }
+    #myInputautocomplete-list{
+        text-align:left !important;
+    }
+    #myInputautocomplete-list strong{
+        /*color:#ec1f27;*/
+        border-bottom:2px solid green;
+    }
+    </style>
+    <section>
+        {% for slider in sliders %}
+        <div style="background-image: url('{{ slider.image }}');background-size:cover;">
+            <div class="s011" style="background:rgba(0, 0, 0, 0.3.7)">
+                <center>
+                    <form action="{% url 'search' %}" method="GET" enctype="multipart/form-data">
+                        <!--{% csrf_token %}-->
+                        <fieldset style="margin-top: 9%;">
+                          <legend>{{ slider.title }}</legend>
+                          <p style="color: white;font-weight: bold;">{{ slider.sub_title }}</p>
+                        </fieldset>
+                        <div class="inner-form" style="width: 98%;">
+                            <header>
+                                <div class="row">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-6">
+                                        <div class="travel-type-wrap">
+                                            <div class="item active" style="border-radius: 0px;" id="Buy">
+                                                <span>Buy</span>
+                                            </div>
+
+                                            <a href="{% url 'property:AdProperty' %}">
+                                                <div class="item" style="border-radius: 0px;" id="Sell">
+                                                <span>Sell</span>
+                                            </div></a>
+
+                                            <div class="item" style="border-radius: 0px;" id="Rent">
+                                                <span>Rent</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="main-form" id="main-form">
+                                <div class="row second">
+                                    <div class="col-md-8 col-xs-12 col-sm-12 input-wrap">
+                                        <div class="" style="width: 100%;border-radius: 0px;">
+                                            <div class="icon-wrap">
+                                                <i class="fa fa-compass" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                            </div>
+                                            <div class="input-field" style="margin-top: -.7rem !important;">
+                                                <label style="margin-bottom: 0rem;padding-top: .5rem;">
+                                                    Location
+                                                </label>
+                                                <input type="search" id="myInput" class="form-control" placeholder="Search Property using Location" style="width: 100%;" name="location">
+                                                <input type="hidden" class="form-control" placeholder="Search Property using Location" id="Purpose" name="purpose" style="width: 100%;" value="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 col-sm-12 input-wrap">
+                                        <div class="" style="width: 100%;border-radius: 0px;">
+                                            <div class="icon-wrap">
+                                                <i class="fa fa-building" style="font-size: 12px;padding-top: 24px; color: black;"></i>
+                                            </div>
+                                            <div class="input-field" style="margin-top: -.7rem!important;">
+                                                <label style="margin-bottom: 0rem;padding-top: .5rem;">
+                                                    Property Type
+                                                </label>
+                                                <!--<select class="form-control" style="background-color: transparent;border:none;" name="property_type" id="employe">-->
+                                                <!--    <option value="0">Select Property Type &nbsp; </option>-->
+                                                <!--    {% for comm in Property_type_tags %}-->
+                                                <!--    <option value="{{comm.id}}">{{comm.type_name}}</option>-->
+                                                <!--    {% endfor %}-->
+                                                <!--</select>-->
+
+                                                <input type="hidden" class="form-control" name="property_type" value="0" id="property_type">
+                                                <div class="dropdown" id="pro_cls_rev" style="position: relative;">
+                                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span id="tag_name">Select Property Type</span>
+                                                    <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu property_cls" style="width: 400px;margin-left: -50%;" id="pro_cls" data-display="static">
+                                                        <div class="row" style="padding:20px;">
+                                                            <div class="col-md-4" id="commercial" style="background-color:#ec1f27;color:white;padding:5px;text-align:center;cursor: pointer;">Commercial</div>
+                                                            <div class="col-md-4" id="residential" style="background-color:#ec1f27;color:white;padding:5px;text-align:center;cursor: pointer;">Residential</div>
+                                                            <div class="col-md-4" id="land" style="background-color:#ec1f27;color:white;padding:5px;text-align:center;cursor: pointer;">Land</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12" id="commercial_tag">
+                                                                <li class="list-group-item text-center" style="border:none;">
+                                                                    <span style="line-height: 30px;">Commercial</span>
+                                                                    <ul class="list-group tagType">
+                                                                        <div class="row">
+                                                                        {% for Com in commercialTag %}
+                                                                        <div class="col-md-6">
+                                                                            <li class="list-group-item com_tag{{Com.id}}" style="line-height: 0px;">
+                                                                                <span id="{{Com.tag_name}}">{{Com.tag_name}}</span>
+                                                                                <span style="display: none;" id="{{Com.id}}">{{Com.id}}</span>
+                                                                            </li>
+                                                                            <script>
+                                                                                $('.com_tag{{Com.id}}').click(function(){
+                                                                                    $.ajaxSetup({
+                                                                                                headers: {
+                                                                                                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                                                                }
+                                                                                            });
+                                                                                    var com_tag_id =$('#{{Com.id}}').text();
+                                                                                    var com_tag    =$('#{{Com.tag_name}}').text();
+                                                                                    console.log(com_tag)
+                                                                                    $('#property_type').val(com_tag_id);
+                                                                                    $('#tag_name').text('Commercial - '+com_tag);
+                                                                                });
+                                                                            </script>
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                        </div>
+                                                                    </ul>
+                                                                </li>
+                                                            </div>
+                                                            <div class="col-md-12" id="residential_tag">
+                                                                <li class="list-group-item text-center" style="border:none;">
+                                                                    <span style="line-height: 30px;">Residential</span>
+                                                                    <ul class="list-group tagType">
+                                                                        <div class="row">
+                                                                        {% for Res in residentialTag %}
+                                                                        <div class="col-md-6">
+                                                                            <li class="list-group-item res_tag{{Res.id}}" style="line-height: 0px;"><span id="{{Res.tag_name}}">{{Res.tag_name}}</span><span style="display: none;"  id="{{Res.id}}">{{Res.id}}</span></li>
+                                                                            <script>
+                                                                                $('.res_tag{{Res.id}}').click(function(){
+                                                                                    $.ajaxSetup({
+                                                                                                headers: {
+                                                                                                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                                                                }
+                                                                                            });
+                                                                                    var com_tag_id =$('#{{Res.id}}').text();
+                                                                                    var com_tag    =$('#{{Res.tag_name}}').text();
+
+                                                                                    console.log(com_tag)
+                                                                                    $('#property_type').val(com_tag_id);
+                                                                                    $('#tag_name').text('Residential - '+com_tag);
+                                                                                });
+                                                                            </script>
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                        </div>
+                                                                    </ul>
+                                                                </li>
+                                                            </div>
+                                                            <div class="col-md-12" id="land_tag">
+                                                                <li class="list-group-item text-center" style="border:none;">
+                                                                    <span style="line-height: 20px;">Land</span>
+                                                                    <ul class="list-group tagType">
+                                                                        <div class="row">
+                                                                        {% for Land in landTag %}
+                                                                        <div class="col-md-6">
+                                                                        <li class="list-group-item land_tag{{Land.id}}" style="line-height: 0px;"><span id="{{Land.tag_name}}">{{Land.tag_name}}</span><span style="display: none;" id="{{Land.id}}">{{Land.id}}</span></li>
+                                                                        <script>
+                                                                            $('.land_tag{{Land.id}}').click(function(){
+                                                                                $.ajaxSetup({
+                                                                                            headers: {
+                                                                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                                                            }
+                                                                                        });
+                                                                                var com_tag_id =$('#{{Land.id}}').text();
+                                                                                var com_tag    =$('#{{Land.tag_name}}').text();
+                                                                                console.log(com_tag_id)
+                                                                                $('#property_type').val(com_tag_id);
+                                                                                $('#tag_name').text('Land - '+com_tag);
+                                                                            });
+                                                                        </script>
+                                                                        </div>
+                                                                        {% endfor %}
+                                                                        </div>
+                                                                    </ul>
+                                                                </li>
+                                                            </div>
+                                                        </div>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row second" style="margin-top: -15px;">
+                                    <div class="col-md-5 col-sm-12 col-xs-12 input-wrap">
+                                        <div class="" style="width: 100%;border-radius: 0px;">
+                                            <div class="icon-wrap">
+                                              <i class="fa fa-money" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                            </div>
+                                            <div class="input-field" style="margin-top: -.7rem!important;">
+                                                <label style="margin-bottom: 0rem;padding-top: .5rem;">Price (BDT)</label>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                        <!--<label style="margin-bottom:-8px;">Min (BDT)</label>-->
+                                                      <input type="number" name="min" class="form-control" placeholder="Min" value="" style="width: 100%;border-right:1px solid black;padding-right:10px;border-radius: 0px;" />
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                                        <!--<label style="margin-bottom:-8px;">Max (BDT)</label>-->
+                                                        <input type="number" name="max" value="" class="form-control" placeholder="Max" style="width: 100%;border-radius: 0px;" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 col-sm-12 col-xs-12 input-wrap">
+                                        <div class="" style="width: 100%;border-radius: 0px;">
+                                            <div class="icon-wrap">
+                                                <i class="fa fa-bed" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                            </div>
+                                            <div class="input-field" style="margin-top: -.7rem!important;">
+                                                <label style="margin-bottom: 0rem;padding-top: .5rem;">Bed</label>
+                                                <select class="form-control" style="background-color: transparent;border:none;" name="bed">
+                                                    <option value="5">All &nbsp; </option>
+                                                    <option value="1">1 &nbsp; </option>
+                                                    <option value="2">2 &nbsp; </option>
+                                                    <option value="3">3 &nbsp; </option>
+                                                    <option value="4">4 &nbsp; </option>
+                                                    <option value="5">5 &nbsp; </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-sm-12 col-xs-12 input-wrap">
+                                        <div class="" style="width: 100%;border-radius: 0px;">
+                                            <div class="icon-wrap">
+                                              <i class="fa fa-cube" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                            </div>
+                                            <div class="input-field" style="margin-top: -.7rem!important;">
+                                                <label style="margin-bottom: 0rem;padding-top: .5rem;">Area (SQ.FT)</label>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <!--<label style="margin-bottom:-8px;">Min (SQ.FT)</label>-->
+                                                        <input type="number" name="min_size" class="form-control" placeholder="Min" value="" style="width: 100%;border-right:1px solid black;padding-right:10px;border-radius: 0px;" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <!--<label style="margin-bottom:-8px;">Max (SQ.FT)</label>-->
+                                                        <input type="number" name="max_size" class="form-control" placeholder="Max" value="" style="width: 100%;border-radius: 0px;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row last">
+                                    <div class="col-md-12" style="margin-top:-13px;">
+                                        <button class="btn-search" type="submit"  style="float:right;"><i class="fa fa-search"></i> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </center>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    <!--/carousel Section-->
+
+    <!-- carouselCategories Section-->
+    <section class="categories">
+        <div class="container">
+            <div class="form-group">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li>
+                        <div class="alert alert-{{message.level_tag}}" id="msg">
+                            {{ message }}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="card mb-0 box-shadow-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6 d-catmb mb-4 mb-lg-0">
+                            <div class="d-flex">
+                                <div>
+									<span class="bg-primary-transparent icon-service1 text-primary">
+										<i class="fa fa-map-o"></i>
+									</span>
+                                </div>
+                                <div class="ml-4 mt-1">
+                                    <h3 class=" mb-0 font-weight-bold">{{count_Commercial}}</h3>
+                                    <p class="mb-0 text-muted">Commercial</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 ">
+                            <div class="d-flex">
+                                <div>
+									<span class="bg-info-transparent icon-service1 text-info">
+										<i class="fa fa-building-o"></i>
+									</span>
+                                </div>
+                                <div class="ml-4 mt-1">
+                                    <h3 class=" mb-0 font-weight-bold ">{{count_Residential}}</h3>
+                                    <p class="mb-0 text-muted">Residential</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 d-catmb mb-4 mb-lg-0">
+                            <div class="d-flex">
+                                <div>
+									<span class="bg-secondary-transparent icon-service1 text-secondary">
+										<i class="fa fa-home"></i>
+									</span>
+                                </div>
+                                <div class="ml-4 mt-1">
+                                    <h3 class=" mb-0 font-weight-bold">{{count_Land}}</h3>
+                                    <p class="mb-0 text-muted">Lands</p>
+                                </div>
+                            </div>
+                        </div>
+
+         <!--               <div class="col-lg-3 col-md-6 col-sm-6 d-catmb mb-4 mb-sm-0">-->
+         <!--                   <div class="d-flex">-->
+         <!--                       <div>-->
+									<!--<span class="bg-warning-transparent icon-service1 text-warning">-->
+									<!--	<i class="fa fa-object-group"></i>-->
+									<!--</span>-->
+         <!--                       </div>-->
+         <!--                       <div class="ml-4 mt-1">-->
+         <!--                           <h3 class=" mb-0 font-weight-bold">{{count_Office}}</h3>-->
+         <!--                           <p class="mb-0 text-muted">Office rooms</p>-->
+         <!--                       </div>-->
+         <!--                   </div>-->
+         <!--               </div>-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--/Section-->
+{% endblock %}
+{% block body_block %}
+    <!-- Categories Section-->
+    <section class="sptb">
+        <div class="container">
+            <div class="section-title center-block text-center">
+                <h2>Property Types</h2>
+                <!--<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>-->
+            </div>
+            <div id="small-categories" class="owl-carousel owl-carousel-icons2">
+                {% for category in categories %}
+                    <div class="item">
+                        <div class="card mb-0">
+                            <!--<div class="item-card">-->
+                            <div class="item-card">
+                                <div class="item-card-desc">
+                                    <a href="/searchPropertyCat/{{ category.id }}"></a>
+                                    <div class="item-card-img">
+                                        <img src="{{ category.icon }}" alt="img" class="br-tr-7 br-tl-7" style="height: 200px;">
+                                    </div>
+                                    <div class="item-card-text">
+                                        <h4 class="mb-0">{{ category.type_name }}</h4>
+                                        <!-- <span class="badge badge-pill badge-primary w-15">45</span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!--/Categories Section-->
+
+    <!--Latest Section-->
+    <section class="sptb bg-white">
+        <div class="container">
+            <div class="section-title center-block text-center">
+                <h2>Latest Properties</h2>
+                <!--<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>-->
+            </div>
+            <div id="myCarousel1" class="owl-carousel owl-carousel-icons2">
+                <!-- Latest Property -->
+                {% for latest in latest_properties %}
+                <div class="item">
+                    <div class="card mb-0">
+                        {% if latest.Property_type == '2' %}
+                        <div class="power-ribbon power-ribbon-top-left text-warning"><span class="bg-warning"><i class="fa fa-bolt"></i></span></div>
+                        {% endif %}
+                        <div class="item-card2-img">
+                            <a href="/ADDetails/{{ latest.id }}"></a>
+                            <img src="/{{latest.Thumbnail}}" alt="img" class="cover-image" style="height:200px;">
+                            <div class="tag-text">
+                                {% if latest.Purpose == '1' %}
+                                <span class="bg-danger tag-option"> Buy </span>
+                                <span class="tag-option" style="background-color:rgba(0,0,0,0.3)">{{latest.Posted_time|naturaltime}}</span>
+                                {% elif latest.Purpose == '2' %}
+                                <span class="bg-danger tag-option"> Rent </span>
+                                <span class="tag-option" style="background-color:rgba(0,0,0,0.3)">{{latest.Posted_time|naturaltime}}</span>
+                                {% else %}
+                                <span class="bg-danger tag-option"> Sale </span>
+                                <span class="tag-option" style="background-color:rgba(0,0,0,0.3)">{{latest.Posted_time|naturaltime}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="item-card2-icons">
+                            <a href="#" data-toggle="modal" data-target="#call" class="item-card2-icons-l bg-primary">
+                            <i class="fa fa-phone"></i></a>
+                            <a href="/ADDetails/{{ latest.id }}" class="item-card2-icons-r" style="background-color:rgba(0,0,0,0.7)"><i class="fa fa-eye"></i></a>
+                        </div>
+                        <div class="card-body" style="height:170px;">
+                            <div class="item-card2">
+                                <div class="item-card2-text">
+                                    <a href="/ADDetails/{{ latest.id }}" class="text-dark"><h5 class="" style="letter-spacing:1px;font-weight:500;">{{latest.Property_title}}</h5></a>
+                                    <p class="mb-2" style="font-size:11px;"><i class="fa fa-map-marker text-danger mr-1"></i> {{latest.location}}</p>
+
+                                </div>
+                                <ul class="item-card2-list" style="padding-top:10px;">
+                                    <!--<p class="mb-3" style="font-size:12.5px;"><i class="fa fa-money"></i> &nbsp;{{latest.Price}} Tk-->
+                                    <!--</p>-->
+                                    <li><a href="#"><i class="fa fa-arrows-alt text-muted mr-1"></i> {{latest.Size}} {{latest.Unit}}</a></li>
+                                    <li><a href="#" class="icons"><i class="fa fa-bed text-muted mr-1"></i> {{latest.Bed}} Beds</a>
+                                    </li>
+                                    <li><a href="#" class="icons"><i class="fa fa-bath text-muted mr-1"></i> {{latest.Bath}} Bath</a>
+                                    </li>
+                                    <li><a href="#" class="icons"><i class="fa fa-fire text-muted mr-1"></i> {{latest.Belcony}} Belcony</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="footerimg d-flex mt-0 mb-0">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="d-flex footerimg-l mb-0">
+                                            <p class="time-title text-muted p-0 leading-normal mt-1 mb-0"><i class="fa fa-money"></i> {{latest.Price|floatformat:0|intcomma}} Tk<i class="si si-check text-success fs-12 ml-1" data-toggle="tooltip" data-placement="top" title="verified"></i></p>
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-md-6">-->
+                                    <!--    <div class="mt-2 footerimg-r ml-auto">-->
+                                    <!--        <small class="text-muted" style="color: #ec1f27;"></small>-->
+                                    <!--    </div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- ModalPhone -->
+            <div class="modal fade" id="call" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header" style="justify-content:center;">
+                            <h3 class="modal-title" id="myModalLabel" style="text-align: center;"><i class="fa fa-phone" style="padding-right:9px;"></i>Call Us For Details</h3>
+                            </div>
+                        <div class="modal-body">
+                            <p style="text-align:center;"> {{com_details.phone}} </p>
+                        </div>
+                        <div class="modal-footer">
+                            <center>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" style="background-color:#ec1f27">Cancel</button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--/ Latest Section-->
+
+    <!--Featured Section-->
+    {% if fetured_properties %}
+    <section class="sptb bg-patterns">
+        <div class="container">
+            <div class="section-title center-block text-center">
+                <h2>Featured Properties</h2>
+                <!--<p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>-->
+            </div>
+            <div id="myCarousel2" class="owl-carousel owl-carousel-icons2">
+                <!-- Wrapper for carousel items -->
+                {% for fetured_propertie in fetured_properties %}
+                <div class="item">
+                    <div class="card mb-0">
+                        {% if fetured_propertie.Purpose == '1' %}
+                        <div class="arrow-ribbon bg-primary">For Buy</div>
+                        {% elif fetured_propertie.Purpose == '2' %}
+                        <div class="arrow-ribbon bg-primary">For Rent</div>
+                        {% else %}
+                        <div class="arrow-ribbon bg-primary">For Sale</div>
+                        {% endif %}
+
+                        <div class="item-card7-imgs">
+                            <a href="/ADDetails/{{ fetured_propertie.id }}"></a>
+                            <img src="/{{fetured_propertie.Thumbnail}}" alt="img" class="cover-image" style="height:200px;">
+                        </div>
+                        <div class="item-card7-overlaytext">
+                            <a href="/ADDetails/{{ fetured_propertie.id }}" class="text-white"> Featured </a>
+                            <span class="mb-0 fs-13 active"><i class="fa fa fa-heart"></i></span>
+                        </div>
+                        <div class="card-body" style="height:200px;">
+                            <div class="item-card7-desc">
+                                <div class="item-card7-text">
+                                    <a href="/ADDetails/{{ fetured_propertie.id }}" class="text-dark"><h4 class="">{{fetured_propertie.Property_title}}</h4></a>
+                                    <p class=""><i class="icon icon-location-pin text-muted mr-1"></i> {{fetured_propertie.location}}</p>
+                                </div>
+                                <ul class="item-cards7-ic mb-0">
+                                    <li><a href="#"><i class="fa fa-arrows-alt text-muted mr-1"></i> {{fetured_propertie.Size}} {{fetured_propertie.Unit}}</a></li>
+                                    <li><a href="#" class="icons"><i class="fa fa-bed text-muted mr-1"></i> {{fetured_propertie.Bed}} Beds</a>
+                                    </li>
+                                    <li><a href="#" class="icons"><i class="fa fa-bath text-muted mr-1"></i> {{fetured_propertie.Bath}} Bath</a>
+                                    </li>
+                                    <li><a href="#" class="icons"><i class="fa fa-fire text-muted mr-1"></i> {{fetured_propertie.Belcony}} Belcony</a>
+                                    </li>
+                                </ul>
+                                <h5 class="font-weight-bold mb-0">{{fetured_propertie.Price|floatformat:0|intcomma}} Tk <span class="fs-12  font-weight-normal">Per Month</span>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="d-flex mb-0">
+                                <span class="fs-12"><i class="icon icon-event mr-2 mt-1"></i>{{fetured_propertie.Posted_time}} </span>
+                                <div class="ml-auto">
+                                    <a href="#" class="" data-toggle="tooltip" data-placement="top"
+                                       title="Share Property"><i class="icon icon-share text-muted"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <!--/Section-->
+    {% if advertisements %}
+    <section>
+        <div class="row">
+            {% for advertisement in advertisements %}
+            <div clas="col-md-2">
+                <img src="/{{advertisement.ad_image}}" style="height:300px;width:350px;">
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    {% if count_videos > 0 %}
+    <section class="sptb" style="background-color:white;">
+    	<div class="container">
+    		<!--<div class="section-title center-block text-center">-->
+    		<!--	<h2>Our Videos</h2>-->
+    		<!--	<p>There are some videos about Company</p>-->
+    		<!--</div>-->
+    		<div class="row">
+    		    {% for video in videos %}
+    			<div class="col-lg-4 col-md-12 col-xl-4">
+    				<div class="card mb-lg-0">
+    					<div class="item7-card-img">
+    						<!--<a href="/{{video.video}}"></a>-->
+    						{% if video.video %}
+    						<video style="width:100%;" poster="/{{video.video_poster}}" controls>
+                               <source src="{{video.video}}" type="video/mp4">
+                            </video>
+                            {% else %}
+                            <img src="/{{video.video_poster}}" style="width:100%;">
+                            {% endif %}
+    					</div>
+    				</div>
+    				<div class="">
+    					<span class="badge badge-info">{{video.title}}</span>
+    				</div>
+    			</div>
+    			{% endfor %}
+    		</div>
+    	</div>
+    </section>
+    {% endif %}
+    <!--Testimonial Section-->
+    <section class="sptb  position-relative bg-white">
+        <div class="container">
+            <div class="section-title center-block text-center">
+                <h2 class=" position-relative" style="padding-bottom:20px;">Testimonials</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="myCarousel" class="owl-carousel testimonial-owl-carousel">
+                        {% for testimonial in testimonials %}
+                            <div class="item text-center">
+                                <div class="row">
+                                    <div class="col-xl-8 col-md-12 d-block mx-auto">
+                                        <div class="">
+                                            <div class="owl-controls clickable mt-0 mb-5">
+                                                <div class="owl-pagination">
+                                                    {% for testimonial_img in testimonials %}
+                                                        {% if testimonial_img.id == testimonial.id %}
+                                                            <div class="owl-page active">
+                                                                <span class=""><img src="{{ testimonial_img.image }}"  style="border-radius:50%;"></span>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="owl-page">
+                                                                <span class=""><img src="{{ testimonial_img.image }}" style="border-radius:50%;"></span>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <p class="">
+                                                <i class="fa fa-quote-left "></i> {{ testimonial.message }}
+                                            </p>
+                                            <h3 class="title">{{ testimonial.author }}</h3>
+                                            <span class="post">{{ testimonial.designation }}</span>
+                                            <div class="rating-stars mb-3">
+                                                <input type="number" readonly="readonly" class="rating-value star"
+                                                       name="rating-stars-value" value="4">
+                                                <!--<div class="rating-stars-container">-->
+                                                <!--    <div class="rating-star sm ">-->
+                                                <!--        <i class="fa fa-star"></i>-->
+                                                <!--    </div>-->
+                                                <!--    <div class="rating-star sm ">-->
+                                                <!--        <i class="fa fa-star"></i>-->
+                                                <!--    </div>-->
+                                                <!--    <div class="rating-star sm ">-->
+                                                <!--        <i class="fa fa-star"></i>-->
+                                                <!--    </div>-->
+                                                <!--    <div class="rating-star sm">-->
+                                                <!--        <i class="fa fa-star"></i>-->
+                                                <!--    </div>-->
+                                                <!--    <div class="rating-star sm">-->
+                                                <!--        <i class="fa fa-star"></i>-->
+                                                <!--    </div>-->
+                                                <!--</div>-->
+                                            </div>
+                                            <!--<a href="testimonial.html" class="btn btn-primary btn-lg">View all-->
+                                            <!--    Testimonials</a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static "search/js/extention/choices.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $('#commercial_tag').show();
+        $('#land_tag').hide();
+        $('#residential_tag').hide();
+        $("#commercial").addClass('nav_active')
+
+        $('#residential').click(function(){
+            $('#commercial_tag').hide();
+            $('#residential_tag').show();
+            $('#land_tag').hide();
+            $("#pro_cls").dropdown('toggle')
+            $(".property_cls").addClass('top_margin')
+            $("#residential").addClass('nav_active')
+            $("#commercial").removeClass('nav_active')
+            $("#land").removeClass('nav_active')
+        });
+        $('#commercial').click(function(){
+            $('#commercial_tag').show();
+            $('#residential_tag').hide();
+            $('#land_tag').hide();
+            $("#pro_cls").dropdown('toggle')
+            $("#commercial").addClass('nav_active')
+            $("#residential").removeClass('nav_active')
+            $("#land").removeClass('nav_active')
+        });
+        $('#land').click(function(){
+            $('#commercial_tag').hide();
+            $('#residential_tag').hide();
+            $('#land_tag').show();
+            $("#pro_cls").dropdown('toggle')
+            $("#land").addClass('nav_active')
+            $("#residential").removeClass('nav_active')
+            $("#commercial").removeClass('nav_active')
+        });
+        $('#Buy').click(function(){
+            $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        }
+                    });
+            $('#Purpose').val(1);
+        });
+        // $('#Sell').click(function(){
+        //     $.ajaxSetup({
+        //                 headers: {
+        //                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        //                 }
+        //             });
+        //     $('#Purpose').val(2);
+        // });
+        $('#Rent').click(function(){
+            $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        }
+                    });
+            $('#Purpose').val(2);
+        });
+    </script>
+    <script>
+      const choices = new Choices('[data-trigger]',
+      {
+        searchEnabled: false,
+        itemSelectText: '',
+      });
+
+    </script>
+    <script src="{% static "search/js/extention/flatpickr.js" %}"></script>
+    <script>
+        flatpickr(".datepicker",{
+            dateFormat: "m/d/y"
+        });
+        var btnTypes = document.querySelectorAll('.travel-type-wrap .item')
+        var mainForm = document.getElementById('main-form')
+        for (let i = 0; i < btnTypes.length; i++){
+            btnTypes[i].addEventListener('click', function(){
+            for (let i = 0; i < btnTypes.length; i++){
+                btnTypes[i].classList.remove('active')
+            }btnTypes[i].classList.add('active')
+            let className = 'type' + i
+            mainForm.className = `${className} main-form`
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        setTimeout(function(){
+            if($('#msg').length > 0){
+                $('#msg').remove();
+            }
+        }, 3000)
+    </script>
+    <script>
+        var countries = [];
+        function autocomplete(inp, arr) {
+          var currentFocus;
+          inp.addEventListener("input", function(e) {
+              var a, b, i, val = this.value;
+              closeAllLists();
+              if (!val) { return false;}
+              currentFocus = -1;
+              a = document.createElement("DIV");
+              a.setAttribute("id", this.id + "autocomplete-list");
+              a.setAttribute("class", "autocomplete-items");
+              this.parentNode.appendChild(a);
+              for (i = 0; i < arr.length; i++) {
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                  b = document.createElement("DIV");
+                  b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                  b.innerHTML += arr[i].substr(val.length);
+                  b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                  b.addEventListener("click", function(e) {
+                      inp.value = this.getElementsByTagName("input")[0].value;
+                      closeAllLists();
+                  });
+                  a.appendChild(b);
+                }
+              }
+          });
+          inp.addEventListener("keydown", function(e) {
+              var x = document.getElementById(this.id + "autocomplete-list");
+              if (x) x = x.getElementsByTagName("div");
+              if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+              } else if (e.keyCode == 38) {
+                currentFocus--;
+                addActive(x);
+              } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                  if (x) x[currentFocus].click();
+                }
+              }
+          });
+          function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+          }
+          function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+              x[i].classList.remove("autocomplete-active");
+            }
+          }
+          function closeAllLists(elmnt) {
+
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+              if (elmnt != x[i] && elmnt != inp) {
+                x[i].parentNode.removeChild(x[i]);
+              }
+            }
+        }
+            document.addEventListener("click", function (e) {
+              closeAllLists(e.target);
+            });
+        }
+
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        $.ajax({
+            url: '/all_locations/',
+            method: 'get',
+
+            success: function(result){
+                // console.log(result)
+                for ( var i = 0, l = result.length; i < l; i++ ) {
+                    countries.push(result[i].location)
+                }
+                // console.log(countries)
+
+            }
+        });
+
+
+        autocomplete(document.getElementById("myInput"), countries);
+    </script>
+    <!--/Section-->
+{% endblock %}

@@ -1,0 +1,1078 @@
+{% extends 'layouts/base.html' %}
+
+{% block carousel_block %}
+{% load static %}
+<link href="{% static "search/css/main.css" %}" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style type="text/css">
+    .text-muted{
+        color:black !important;
+        font-weight:bold;
+    }
+    .tagType li:hover{
+        background-color: #ec1f27;
+        cursor: pointer;
+        color: white;
+    }
+    .form-control{
+        color:#969595;
+    }
+    .tagType li:hover{
+        background-color: #ec1f27;
+        cursor: pointer;
+        color: white;
+    }
+    .nav_active{
+        background-color:#4a4747 !important;
+
+    }
+    /*Autocompolete*/
+
+    .autocomplete {
+      position: relative;
+      display: inline-block;
+    }
+
+    input {
+      border: 1px solid transparent;
+      background-color: #f1f1f1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    input[type=text] {
+      background-color: #f1f1f1;
+      width: 100%;
+    }
+
+    input[type=submit] {
+      background-color: DodgerBlue;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .autocomplete-items {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+
+    .autocomplete-items div {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #fff;
+      border-bottom: 1px solid #d4d4d4;
+    }
+
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+      background-color: #e9e9e9;
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+      background-color: DodgerBlue !important;
+      color: #ffffff;
+    }
+    .autocomplete-items{
+        max-height:200px;
+        overflow-y : scroll;
+    }
+</style>
+
+<section>
+    <div class="container">
+        <div class="row" style="margin-top: 7%;margin-left: 5px;margin-bottom:7px;">
+            <div class="btn-group btn-breadcrumb">
+                <a href="#" data-toggle="modal" data-target="#searchModal" class="btn btn-danger" style="background-color:#ec1f27;">
+                    <i class="glyphicon glyphicon-search"></i> Back To Search
+                </a>
+                <a href="{% url 'home' %}" class="btn btn-success">Home</a>
+                <a href="{% url 'AddList' %}" class="btn btn-info">Properties</a>
+                <a href="#" class="btn btn-default">Property List</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% load humanize %}
+{% block body_block  %}
+<!--Section-->
+<section class="sptb">
+    <div class="container" style="margin-top:-20px;">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li>
+                <div class="alert alert-{{message.level_tag}}" id="msg">
+                    {{ message }}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="row">
+            <!--Left Side Content-->
+            <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                <!--Add lists-->
+                <div class=" mb-lg-0">
+                    <div class="">
+                        <div class="item2-gl ">
+                            <div class=" mb-0">
+                                <div class="" style="margin-bottom: -20px;">
+                                    <div class="p-5 bg-white item2-gl-nav d-flex">
+                                        {% if properties.count < 10 %}
+                                        <h6 class="mb-0 mt-2">Showing {{properties.count}} of {{properties.count}} entries</h6>
+                                        {% else %}
+                                        <h6 class="mb-0 mt-2">Showing 10 of {{properties.count}} entries</h6>
+                                        {% endif %}
+                                        <ul class="nav item2-gl-menu ml-auto">
+                                            <li class=""><a href="#tab-11" class="active show" data-toggle="tab" title="List style"><i class="fa fa-list"></i></a></li>
+                                            <li><a href="#tab-12" data-toggle="tab" class="" title="Grid"><i class="fa fa-th"></i></a></li>
+                                        </ul>
+                                        <div class="d-flex">
+                                            <label class="mr-2 mt-1 mb-sm-1">Sort :</label>
+                                            <select name="item" class="form-control select-sm w-75" id="sort_by">
+                                                <option value="0">Select To sort</option>
+                                                <option value="1">Latest</option>
+                                                <option value="2">Oldest</option>
+                                                <option value="3">Price:Low-to-High</option>
+                                                <option value="4">Price:Hight-to-Low</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab-11">
+                                    {% for property in posts %}
+                                    <div class="card overflow-hidden">
+                                        <div class="d-md-flex">
+                                            <div class="item-card9-img">
+                                                <div class="arrow-ribbon bg-primary">{{property.Price|floatformat:0|intcomma}} Tk</div>
+                                                <div class="item-card9-imgs">
+                                                    <a href="/ADDetails/{{ property.id }}"></a>
+                                                    <img src="/{{property.Thumbnail}}" alt="img" class="cover-image">
+                                                </div>
+                                                <div class="item-card9-icons">
+                                                    <!--<a href="/subscriber/wish/{{ property.id }}" class="item-card9-icons1 wishlist" data-toggle="tooltip" data-placement="top" title="wishlist" id="wish{{ property.id }}"> <i class="fa fa fa-heart-o"></i></a>-->
+                                                    <a href="javascript:void(0)" class="item-card9-icons1 wishlist" data-toggle="tooltip" data-placement="top" title="wishlist" id="wish{{ property.id }}"> <i class="fa fa fa-heart-o"></i></a>
+                                                    <!--<a href="/wish-list/remove-wish/{{property.id}}" class="item-card9-icons1 wishlist" data-toggle="tooltip" data-placement="top" title="wishlist" id="wished{{ property.id }}" style="background-color:#ec1f27;"> <i class="fa fa fa-heart" style="color:white;"></i></a>-->
+                                                    <a href="javascript:void(0)" class="item-card9-icons1 wishlist" data-toggle="tooltip" data-placement="top" title="wishlist" id="wished{{ property.id }}" style="background-color:#ec1f27;"> <i class="fa fa fa-heart" style="color:white;"></i></a>
+                                                    <a href="http://www.facebook.com/sharer/sharer.php?u={{request.scheme}}://{{request.get_host}}/ADDetails/{{ property.id|urlencode }}" class="item-card9-icons1 bg-purple" data-toggle="tooltip" data-placement="top" title="Share" target="_blank"> <i class="icon icon-share" ></i></a>
+                                                    <input type="hidden" value="{{ property.id }}" id="property{{ property.id }}">
+                                                    <script>
+
+                        							        $.ajaxSetup({
+                        							                    headers: {
+                        							                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        							                    }
+                        							                });
+
+                        							        var property_id = $('#property{{ property.id }}').val();
+
+                                                            $.ajax({
+                                                                url: "/subscriber/check_wishlist/"+property_id,
+                                                                method: 'get',
+
+                                                                success: function(result){
+                                                                        // $("#wish{{ property.id }}").hiden()
+                                                                        if(result>0){
+                                                                            $("#wish{{ property.id }}").hide()
+                                                                            $("#wished{{ property.id }}").show()
+                                                                        }else{
+                                                                            $("#wish{{ property.id }}").show()
+                                                                            $("#wished{{ property.id }}").hide()
+                                                                        }
+
+                                                                    }
+                                                            });
+                        							</script>
+                                                    <script>
+                                                        $('#wish{{ property.id }}').click(function(){
+                                                            $.ajaxSetup({
+                            							                    headers: {
+                            							                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            							                    }
+                            							                });
+
+                        							        var property_id = $('#property{{ property.id }}').val();
+
+                                                            $.ajax({
+                                                                url: "/subscriber/wish/"+property_id,
+                                                                method: 'get',
+
+                                                                success: function(result){
+                                                                        $("#wish{{ property.id }}").hide()
+                                                                        $("#wished{{ property.id }}").show()
+
+                                                                    }
+                                                            });
+                                                        });
+                                                        $('#wished{{ property.id }}').click(function(){
+                                                            $.ajaxSetup({
+                            							                    headers: {
+                            							                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            							                    }
+                            							                });
+
+                        							        var property_id = $('#property{{ property.id }}').val();
+
+                                                            $.ajax({
+                                                                url: "/wish-list/remove-wish/"+property_id,
+                                                                method: 'get',
+
+                                                                success: function(result){
+                                                                        $("#wish{{ property.id }}").show()
+                                                                        $("#wished{{ property.id }}").hide()
+                                                                    }
+                                                            });
+                                                        });
+                                                    </script>
+                                                </div>
+                                                <div class="item-tags">
+                                                    {% if property.Purpose == '1' %}
+                                                    <div class="bg-success tag-option">For Buy </div>
+                                                    <!--<div class="bg-pink tag-option">{{property.Posted_time|naturaltime}}</div>-->
+                                                    {% elif property.Purpose == '2' %}
+                                                    <div class="bg-success tag-option"> Rent </div>
+                                                    <!--<div class="bg-pink tag-option">{{property.Posted_time|naturaltime}}</div>-->
+                                                    {% else %}
+                                                    <div class="bg-success tag-option"> Sale </div>
+
+                                                    {% endif %}
+                                                </div>
+                                                <div class="item-trans-rating">
+                                                    <div class="tag-option" style="color:white;">{{property.Posted_time|naturaltime}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="card border-0 mb-0">
+                                                <div class="card-body ">
+                                                    <div class="item-card9">
+                                                        <a href="/ADDetails/{{ property.id }}" class="text-muted mr-4"><i class="fa fa-tag mr-1"></i> {{property.Property_tag_type}}</a>
+                                                        <a href="/ADDetails/{{ property.id }}" class="text-dark"><h4 class="font-weight-bold mt-1">{{property.Property_title}} </h4></a>
+                                                        <p>{{property.location}}</p>
+                                                        <div class="mb-2">
+                                                            <a href="#" class="icons text-muted mr-4"><i class="fa fa-arrows-alt text-muted mr-1"></i> {{property.Size}} {{property.Unit}}</a>
+                                                            <a href="#" class="icons text-muted mr-4"><i class="fa fa-bed text-muted mr-1"></i> {{property.Bed}} Beds</a>
+                                                            <a href="#" class="icons text-muted mr-4"><i class="fa fa-bath text-muted mr-1"></i> {{property.Bath}} Bath</a>
+                                                            <a href="#" class="icons text-muted mr-4"><i class="fa fa-fire text-muted mr-1"></i> {{property.Belcony}} Belcony</a>
+                                                        </div>
+                                                        <p class="mb-0 leading-tight">{{property.Description|slice:"0:50"}}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer pt-4 pb-4">
+                                                    <div class="item-card9-footer d-flex">
+                                                        <div class="item-card9-cost">
+                                                            <p>Property Code : #0{{property.id}}</p>
+                                                        </div>
+                                                        <div class="ml-auto">
+                                                            <a href="#" data-toggle="modal" data-target="#contact{{property.id}}"><button class="btn btn-info" style="margin-right:15px;border-radius:0px;">
+                                                                <i class="fa fa-envelope"></i> Email
+                                                            </button></a>
+                                                            <style>
+                                                                .green{
+                                                                    background-color:#0c7e5c;
+                                                                    color:white;
+                                                                    border-radius:0px;
+                                                                }
+                                                                .green:hover{
+                                                                    background-color:#07543d;
+                                                                    color:white;
+                                                                }
+                                                            </style>
+                                                            <a href="#" data-toggle="modal" data-target="#call"><button class="btn btn-default green" style="">
+                                                                <i class="fa fa-phone"></i> Call
+                                                            </button></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="tab-pane" id="tab-12">
+                                    <div class="row">
+                                        {% for property in posts %}
+                                        <div class="col-lg-6 col-md-12 col-xl-4">
+                                            <div class="card overflow-hidden">
+                                                <div class="item-card9-img">
+                                                    <div class="arrow-ribbon bg-primary">{{property.Price|floatformat:0|intcomma}} Tk</div>
+                                                    <div class="item-card9-imgs">
+                                                        <a href="/ADDetails/{{ property.id }}"></a>
+                                                        <img src="/{{property.Thumbnail}}" alt="img" class="cover-image" style="height:200px;">
+                                                    </div>
+                                                    <div class="item-card9-icons">
+                                                        <a href="/subscriber/wish/{{ property.id }}" class="item-card9-icons1 wishlist" data-toggle="tooltip" data-placement="top" title="wishlist" id="wish_grid{{ property.id }}"> <i class="fa fa fa-heart-o"></i></a>
+                                                        <a href="http://www.facebook.com/sharer/sharer.php?u={{request.scheme}}://{{request.get_host}}/ADDetails/{{ property.id|urlencode }}" class="item-card9-icons1 bg-purple" data-toggle="tooltip" data-placement="top" title="Share"> <i class="icon icon-share" ></i></a>
+
+                                                        <input type="hidden" value="{{ property.id }}" id="property_grid{{ property.id }}">
+                                                        <script>
+                            							        $.ajaxSetup({
+                            							                    headers: {
+                            							                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            							                    }
+                            							                });
+
+                            							        var property_grid_id = $('#property_grid{{ property.id }}').val();
+
+                                                                $.ajax({
+                                                                    url: "/subscriber/check_wishlist/"+property_grid_id,
+                                                                    method: 'get',
+
+                                                                    success: function(result){
+                                                                            // $("#wish{{ property.id }}").hiden()
+                                                                            if(result>0){
+                                                                                $("#wish_grid{{ property.id }}").hide()
+                                                                            }
+
+                                                                        }
+                                                                });
+                            							</script>
+
+                                                    </div>
+                                                    <div class="item-tags">
+                                                        {% if property.Purpose == '1' %}
+                                                        <span class="bg-danger tag-option">For Buy </span>
+                                                        <span class="bg-pink tag-option">{{property.Posted_time|naturaltime}}</span>
+                                                        {% elif property.Purpose == '2' %}
+                                                        <span class="bg-danger tag-option"> Rent </span>
+                                                        <span class="bg-pink tag-option">{{property.Posted_time|naturaltime}}</span>
+                                                        {% else %}
+                                                        <span class="bg-danger tag-option"> Sale </span>
+                                                        <span class="bg-pink tag-option">{{property.Posted_time|naturaltime}}</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="card-body" style="height:165px;">
+                                                    <div class="item-card9">
+                                                        <!--<a href="/ADDetails/{{ property.id }}" class="text-muted mr-4"><i class="fa fa-tag mr-1"></i>{{property.Category}}</a>-->
+                                                        <!--<a href="#" class=""><span class="text-muted"><i class="fa fa-user text-muted mr-1"></i> {{property.Posted_by}}</span></a>-->
+                                                        <a href="/ADDetails/{{ property.id }}" class="text-dark mt-2"><h4 style="font-size:15px; padding-bottom:20px;"> {{property.Property_title}} </h4></a>
+                                                        <ul class="item-card2-list">
+                                                            <li><a href="#" class="icons text-muted"><i class="fa fa-arrows-alt text-muted mr-1"></i> {{property.Size}} {{property.Unit}}</a></li>
+                                                            <li><a href="#" class="icons text-muted"><i class="fa fa-bed text-muted mr-1"></i> {{property.Bed}} Beds</a></li>
+                                                            <li class="mb-3"><a href="#" class="icons text-muted"><i class="fa fa-bath text-muted mr-1"></i> {{property.Bath}} Bath</a></li>
+                                                            <li class="mb-3"><a href="#" class="icons text-muted"><i class="fa fa-fire text-muted mr-1"></i> {{property.Belcony}} Belcony</a></li>
+                                                        </ul>
+                                                        <!--<p class="mb-0">{{property.Description|slice:"0:30"}}....</p>-->
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="item-card9-footer d-flex">
+                                                        <div class="item-card9-cost">
+                                                            <a href="#" class="mr-4"><span class="" style="font-size:11px;"><i class="fa fa-map-marker text-muted mr-1"></i> {{property.location}}</span></a>
+                                                        </div>
+                                                        <!--<div class="ml-auto">-->
+                                                        <!--    <a href="#" class=""><span class=""><i class="fa fa-calendar-o text-muted mr-1"></i> {{property.Posted_time|naturaltime}}</span></a>-->
+                                                        <!--</div>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="center-block text-center">
+                            <ul class="pagination mb-0">
+                                {% if posts.has_previous %}
+                                <li class="page-item page-prev">
+                                    <a class="page-link" href="?page={{ posts.previous_page_number}}">Prev</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item page-prev disabled">
+                                    <a class="page-link" href="">Prev</a>
+                                </li>
+                                {% endif %}
+                                {% for pg in posts.paginator.page_range %}
+                                    {% if posts.number == pg %}
+                                        <li class="page-item active"><a class="page-link" href="?page={{ pg }}">{{ pg }}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ pg }}">{{ pg }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+                                {% if posts.has_next %}
+                                <li class="page-item page-next">
+                                    <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    {% for key in posts %}
+                    <div class="modal fade" id="contact{{key.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" style="width: 600px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="myModalLabel" style="text-align: center;">inquiry about this product</h3>
+                                    </div>
+                                <div class="modal-body">
+                                    {% if request.user.is_authenticated %}
+                                    <div class="col-lg-12 col-xl-12 col-md-12">
+                                        <form action="{% url 'send_message' %}" method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="card mb-0">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Your Name" name="name" value="{{ current_user.username }}" readonly="">
+                                                        <!-- <input type="hidden" class="form-control" id="name1" placeholder="Your Name" name="id" value="{{ current_user.id }}" readonly=""> -->
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="email" class="form-control" placeholder="Email Address" name="email" value="{{ current_user.email }}" readonly="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="test" class="form-control" placeholder="Your Phone No." name="phone" value="" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Subject" name="subject" value="{{key.Property_title}} #{{key.id}}" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" name="message" rows="3" placeholder="Message" required="" style="text-align:left;color:black;">I would like to request for your property (ID: #{{key.id}} ). Please contact me as quick as convenience.</textarea>
+                                                    </div>
+                                                    <div class="text-left">
+                                                        <button type="submit" class="btn btn-info br-tr-3  br-br-3" style="float:right">
+                                                            Send Message
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" style="float:left;">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-lg-12 col-xl-12 col-md-12">
+                                        <form action="{% url 'send_message' %}" method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <div class="card mb-0">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control"  placeholder="Your Name" name="name" value="" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="email" class="form-control" placeholder="Your Email Address" name="email" value="" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="test" class="form-control" placeholder="Your Phone No." name="phone" value="" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input type="text" class="form-control" placeholder="Subject" name="subject" value="{{key.Property_title}} #{{key.id}}" readonly="" required="">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" name="message" rows="3" placeholder="Message" required=""></textarea>
+                                                    </div>
+                                                    <div class="text-left">
+
+                                                        <button type="submit" class="btn btn-info br-tr-3  br-br-3" style="float:right">
+                                                            Send Message
+                                                        </button>
+                                                        <button type="button" class="btn btn-primary" data-dismiss="modal" style="float:left;">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <!--<div class="modal-footer">-->
+                                <!--    <center>-->
+                                <!--        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>-->
+                                <!--    </center>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- ModalPhone -->
+                    <div class="modal fade" id="call" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header" style="justify-content:center;">
+                                    <h3 class="modal-title" id="myModalLabel" style="text-align: center;"><i class="fa fa-phone" style="padding-right:9px;"></i>Call Us For Details</h3>
+                                    </div>
+                                <div class="modal-body">
+                                    <p style="text-align:center;"> {{com_details.phone}} </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <center>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- search modal -->
+                    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" style="width: 100%;">
+                        <div class="modal-content" style="background-color: transparent;border:none;">
+                            <div class="modal-body">
+                                <div class="col-lg-12 col-xl-12 col-md-12">
+                                    <div class="s011">
+                                        <center>
+                                            <form action="{% url 'search' %}" method="GET" enctype="multipart/form-data">
+                                                <!--{% csrf_token %}-->
+                                                <div class="inner-form" style="width: 111%;">
+                                                    <header>
+                                                        <div class="row">
+                                                            <div class="col-md-3"></div>
+                                                            <div class="col-md-6">
+                                                                <div class="travel-type-wrap">
+                                                                    {% if active == '1' %}
+                                                                    <div class="item active" style="border-radius: 0px;" id="Buy">
+                                                                        <span>Buy</span>
+                                                                    </div>
+                                                                    <a href="{% url 'property:AdProperty' %}">
+                                                                        <div class="item" style="border-radius: 0px;" id="Sell">
+                                                                        <span>Sell</span>
+                                                                    </div></a>
+
+                                                                    <div class="item" style="border-radius: 0px;" id="Rent">
+                                                                        <span>Rent</span>
+                                                                    </div>
+                                                                    {% else %}
+                                                                    <div class="item" style="border-radius: 0px;" id="Buy">
+                                                                        <span>Buy</span>
+                                                                    </div>
+                                                                    <a href="{% url 'property:AdProperty' %}">
+                                                                        <div class="item" style="border-radius: 0px;" id="Sell">
+                                                                        <span>Sell</span>
+                                                                    </div></a>
+
+                                                                    <div class="item active" style="border-radius: 0px;" id="Rent">
+                                                                        <span>Rent</span>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </header>
+                                                    <div class="main-form" id="main-form">
+                                                        <div class="row second">
+                                                            <div class="col-md-8 col-xs-12 col-sm-12 input-wrap">
+                                                                <div class="" style="width: 100%;border-radius: 0px;">
+                                                                    <div class="icon-wrap">
+                                                                        <i class="fa fa-compass" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                                                    </div>
+                                                                    <div class="input-field" style="margin-top: -.7rem !important;">
+                                                                        <label style="margin-bottom: 0rem;padding-top: .5rem;">
+                                                                            Location
+                                                                        </label>
+                                                                        <input type="search" id="myInput" class="form-control" placeholder="Search Property using Location" style="width: 100%;" name="location">
+                                                                        <input type="hidden" class="form-control" placeholder="Search Property using Location" id="Purpose" name="purpose" style="width: 100%;" value="" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4 col-xs-12 col-sm-12 input-wrap">
+                                                                <div class="" style="width: 100%;border-radius: 0px;">
+                                                                    <div class="icon-wrap">
+                                                                        <i class="fa fa-building" style="font-size: 12px;padding-top: 24px; color: black;"></i>
+                                                                    </div>
+                                                                    <div class="input-field" style="margin-top: -.7rem!important;">
+                                                                        <label style="margin-bottom: 0rem;padding-top: .5rem;">
+                                                                            Property Type
+                                                                        </label>
+                                                                        <!--<select class="form-control" style="background-color: transparent;border:none;" name="property_type" id="employe">-->
+                                                                        <!--    <option value="0">Select Property Type &nbsp; </option>-->
+                                                                        <!--    {% for comm in Property_type_tags %}-->
+                                                                        <!--    <option value="{{comm.id}}">{{comm.type_name}}</option>-->
+                                                                        <!--    {% endfor %}-->
+                                                                        <!--</select>-->
+                                                                        <input type="hidden" class="form-control" name="property_type" value="0" id="property_type">
+                                                                        <div class="dropdown" id="pro_cls_rev" style="position: relative;">
+                                                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span id="tag_name">Select Property Type</span>
+                                                                            <span class="caret"></span></button>
+                                                                            <ul class="dropdown-menu property_cls" style="width: 400px;margin-left: -50%;" id="pro_cls" data-display="static">
+                                                                                <div class="row" style="padding:20px;">
+                                                                                    <div class="col-md-4" id="commercial" style="background-color:#ec1f27;color:white;padding:5px;text-align:center;cursor: pointer;">Commercial</div>
+                                                                                    <div class="col-md-4" id="residential" style="background-color:#ec1f27;color:white;padding:5px;text-align:center;cursor: pointer;">Residential</div>
+                                                                                    <div class="col-md-4" id="land" style="background-color:#ec1f27;color:white;padding:5px;text-align:center;cursor: pointer;">Land</div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12" id="commercial_tag">
+                                                                                        <li class="list-group-item text-center" style="border:none;">
+                                                                                            <span style="line-height: 30px;">Commercial</span>
+                                                                                            <ul class="list-group tagType">
+                                                                                                <div class="row">
+                                                                                                {% for Com in commercialTag %}
+                                                                                                <div class="col-md-6">
+                                                                                                    <li class="list-group-item com_tag{{Com.id}}" style="line-height: 0px;">
+                                                                                                        <span id="{{Com.tag_name}}">{{Com.tag_name}}</span>
+                                                                                                        <span style="display: none;" id="{{Com.id}}">{{Com.id}}</span>
+                                                                                                    </li>
+                                                                                                    <script>
+                                                                                                        $('.com_tag{{Com.id}}').click(function(){
+                                                                                                            $.ajaxSetup({
+                                                                                                                        headers: {
+                                                                                                                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                                                                                        }
+                                                                                                                    });
+                                                                                                            var com_tag_id =$('#{{Com.id}}').text();
+                                                                                                            var com_tag    =$('#{{Com.tag_name}}').text();
+                                                                                                            console.log(com_tag)
+                                                                                                            $('#property_type').val(com_tag_id);
+                                                                                                            $('#tag_name').text('Commercial - '+com_tag);
+                                                                                                        });
+                                                                                                    </script>
+                                                                                                </div>
+                                                                                                {% endfor %}
+                                                                                                </div>
+                                                                                            </ul>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                    <div class="col-md-12" id="residential_tag">
+                                                                                        <li class="list-group-item text-center" style="border:none;">
+                                                                                            <span style="line-height: 30px;">Residential</span>
+                                                                                            <ul class="list-group tagType">
+                                                                                                <div class="row">
+                                                                                                {% for Res in residentialTag %}
+                                                                                                <div class="col-md-6">
+                                                                                                    <li class="list-group-item res_tag{{Res.id}}" style="line-height: 0px;"><span id="{{Res.tag_name}}">{{Res.tag_name}}</span><span style="display: none;"  id="{{Res.id}}">{{Res.id}}</span></li>
+                                                                                                    <script>
+                                                                                                        $('.res_tag{{Res.id}}').click(function(){
+                                                                                                            $.ajaxSetup({
+                                                                                                                        headers: {
+                                                                                                                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                                                                                        }
+                                                                                                                    });
+                                                                                                            var com_tag_id =$('#{{Res.id}}').text();
+                                                                                                            var com_tag    =$('#{{Res.tag_name}}').text();
+
+                                                                                                            console.log(com_tag)
+                                                                                                            $('#property_type').val(com_tag_id);
+                                                                                                            $('#tag_name').text('Residential - '+com_tag);
+                                                                                                        });
+                                                                                                    </script>
+                                                                                                </div>
+                                                                                                {% endfor %}
+                                                                                                </div>
+                                                                                            </ul>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                    <div class="col-md-12" id="land_tag">
+                                                                                        <li class="list-group-item text-center" style="border:none;">
+                                                                                            <span style="line-height: 20px;">Land</span>
+                                                                                            <ul class="list-group tagType">
+                                                                                                <div class="row">
+                                                                                                {% for Land in landTag %}
+                                                                                                <div class="col-md-6">
+                                                                                                <li class="list-group-item land_tag{{Land.id}}" style="line-height: 0px;"><span id="{{Land.tag_name}}">{{Land.tag_name}}</span><span style="display: none;" id="{{Land.id}}">{{Land.id}}</span></li>
+                                                                                                <script>
+                                                                                                    $('.land_tag{{Land.id}}').click(function(){
+                                                                                                        $.ajaxSetup({
+                                                                                                                    headers: {
+                                                                                                                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                                                                                                    }
+                                                                                                                });
+                                                                                                        var com_tag_id =$('#{{Land.id}}').text();
+                                                                                                        var com_tag    =$('#{{Land.tag_name}}').text();
+                                                                                                        console.log(com_tag_id)
+                                                                                                        $('#property_type').val(com_tag_id);
+                                                                                                        $('#tag_name').text('Land - '+com_tag);
+                                                                                                    });
+                                                                                                </script>
+                                                                                                </div>
+                                                                                                {% endfor %}
+                                                                                                </div>
+                                                                                            </ul>
+                                                                                        </li>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row second" style="margin-top: -15px;">
+                                                            <div class="col-md-5 col-sm-12 col-xs-12 input-wrap">
+                                                                <div class="" style="width: 100%;border-radius: 0px;">
+                                                                    <div class="icon-wrap">
+                                                                      <i class="fa fa-money" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                                                    </div>
+                                                                    <div class="input-field" style="margin-top: -.7rem!important;">
+                                                                        <label style="margin-bottom: 0rem;padding-top: .5rem;">Price (BDT)</label>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                              <input type="text" name="min" class="form-control" placeholder="Min" value="" style="width: 100%;border-right:1px solid black;padding-right:10px;border-radius: 0px;" />
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                                <input type="text" name="max" value="" class="form-control" placeholder="Max" style="width: 100%;border-radius: 0px;" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-sm-12 col-xs-12 input-wrap">
+                                                                <div class="" style="width: 100%;border-radius: 0px;">
+                                                                    <div class="icon-wrap">
+                                                                        <i class="fa fa-bed" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                                                    </div>
+                                                                    <div class="input-field" style="margin-top: -.7rem!important;">
+                                                                        <label style="margin-bottom: 0rem;padding-top: .5rem;">Bed</label>
+                                                                        <select class="form-control" style="background-color: transparent;border:none;" name="bed">
+                                                                            <option value="5">All &nbsp; </option>
+                                                                            <option value="1">1 &nbsp; </option>
+                                                                            <option value="2">2 &nbsp; </option>
+                                                                            <option value="3">3 &nbsp; </option>
+                                                                            <option value="4">4 &nbsp; </option>
+                                                                            <option value="5">5 &nbsp; </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5 col-sm-12 col-xs-12 input-wrap">
+                                                                <div class="" style="width: 100%;border-radius: 0px;">
+                                                                    <div class="icon-wrap">
+                                                                      <i class="fa fa-cube" style="font-size: 14px;padding-top: 24px; color: black;"></i>
+                                                                    </div>
+                                                                    <div class="input-field" style="margin-top: -.7rem!important;">
+                                                                        <label style="margin-bottom: 0rem;padding-top: .5rem;">Area (SQ.FT)</label>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                              <input type="text" name="min_size" class="form-control" placeholder="Min" value="" style="width: 100%;border-right:1px solid black;padding-right:10px;border-radius: 0px;" />
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <input type="text" name="max_size" class="form-control" placeholder="Max" value="" style="width: 100%;border-radius: 0px;" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row last" style="margin-left: -23px;">
+                                                            <div class="col-md-6">
+                                                                <button style="float: left;background-color: #ec1f27;" class="btn-search" type="submit"  data-dismiss="modal">Cancel</button>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <button style="float: right;" class="btn-search" type="submit">Search</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="modal-footer">
+                                <center>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                </center>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!--/Add lists-->
+            </div>
+            <!--Right Side Content-->
+            <div class="col-xl-3 col-lg-4 col-md-12">
+                <div class="card" style="height: 79px;">
+                    <div class="card-body">
+                        <form action="{% url 'propertySearch' %}" method="GET" enctype="multipart/form-data">
+                            <!--{% csrf_token %}-->
+                            <div class="input-group">
+                                <input type="text" class="form-control br-tl-3  br-bl-3" placeholder="Property Title" name="search_title">
+                                <div class="input-group-append ">
+                                    <button type="submit" class="btn btn-primary br-tr-3  br-br-3">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Categories</h3>
+                    </div>
+                    <style>
+                        ul li a span:hover {
+                            /*color:red !important;*/
+                            /*background-color:#ec1f27;*/
+                            color:white !important;
+                        }
+                        .category:hover{
+                            background-color:#ec1f27;
+                        }
+                    </style>
+                    <div class="card-body">
+                        <ul>
+                            {% for category in categories %}
+                            <li style="padding:5px 0px 5px 5px" class="category">
+                                <a href="/searchPropertyCat/{{ category.id }}" style="line-height:15px;">
+                                    <!--<i class="fa fa-arrow-right"></i> <span class="text-dark"> {{category.type_name}}</span>-->
+                                    <span class="text-dark"> {{category.type_name}}</span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="card-header border-top">
+                        <h3 class="card-title">Price Range</h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'propertyRangeSearch' %}" method="GET" enctype="multipart/form-data">
+                            <div class="row">
+                                {% csrf_token %}
+
+                                <div class="col-md-6">
+                                    <label style="color: #ec1f27;text-align: center;">Min</label>
+                                    <input type="number" placeholder="" id="price-min" name="min_price" class="form-control" value="" style="border:1px solid #ec1f27;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label style="color: #ec1f27;text-align: center;">Max</label>
+                                    <input type="number" placeholder="" id="price-max" name="max_price" value="" class="form-control" style="border:1px solid #ec1f27;">
+                                </div>
+                                <div class="col-md-12" style="padding-top: 30px;">
+                                    <div id="mySlider"></div>
+                                </div>
+                                <button type="submit" class="btn btn-info btn-block" style="margin-top: 20px;">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                {% if advertisement.ad_image %}
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h3 class="card-title">{{advertisement.ad_title}}</h3>
+                    </div>
+                    <div class="card-body product-filter-desc" style="padding:0px;">
+                        <div class="product-filter-icons text-center">
+                            <img src="/{{advertisement.ad_image}}" alt="img" class="cover-image">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{% static "search/js/extention/choices.js" %}"></script>
+<script>
+    $('#commercial_tag').show();
+    $('#land_tag').hide();
+    $('#residential_tag').hide();
+    $("#commercial").addClass('nav_active')
+
+    $('#residential').click(function(){
+        $('#commercial_tag').hide();
+        $('#residential_tag').show();
+        $('#land_tag').hide();
+        $("#pro_cls").dropdown('toggle')
+        $(".property_cls").addClass('top_margin')
+        $("#residential").addClass('nav_active')
+        $("#commercial").removeClass('nav_active')
+        $("#land").removeClass('nav_active')
+    });
+    $('#commercial').click(function(){
+        $('#commercial_tag').show();
+        $('#residential_tag').hide();
+        $('#land_tag').hide();
+        $("#pro_cls").dropdown('toggle')
+        $("#commercial").addClass('nav_active')
+        $("#residential").removeClass('nav_active')
+        $("#land").removeClass('nav_active')
+    });
+    $('#land').click(function(){
+        $('#commercial_tag').hide();
+        $('#residential_tag').hide();
+        $('#land_tag').show();
+        $("#pro_cls").dropdown('toggle')
+        $("#land").addClass('nav_active')
+        $("#residential").removeClass('nav_active')
+        $("#commercial").removeClass('nav_active')
+    });
+    $('#Buy').click(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        $('#Purpose').val(1);
+    });
+    // $('#Sell').click(function(){
+    //     $.ajaxSetup({
+    //                 headers: {
+    //                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+    //                 }
+    //             });
+    //     $('#Purpose').val(2);
+    // });
+    $('#Rent').click(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        $('#Purpose').val(2);
+    });
+</script>
+<script>
+  const choices = new Choices('[data-trigger]',
+  {
+    searchEnabled: false,
+    itemSelectText: '',
+  });
+
+</script>
+<script src="{% static "search/js/extention/flatpickr.js" %}"></script>
+<script>
+    flatpickr(".datepicker",{
+        dateFormat: "m/d/y"
+    });
+    var btnTypes = document.querySelectorAll('.travel-type-wrap .item')
+    var mainForm = document.getElementById('main-form')
+    for (let i = 0; i < btnTypes.length; i++){
+        btnTypes[i].addEventListener('click', function(){
+        for (let i = 0; i < btnTypes.length; i++){
+            btnTypes[i].classList.remove('active')
+        }btnTypes[i].classList.add('active')
+        let className = 'type' + i
+        mainForm.className = `${className} main-form`
+        })
+    }
+</script>
+<script>
+    $('#sort_by').change(function(){
+        $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+        var sort = $('#sort_by option:selected').val();
+
+
+        if(sort>0){
+            window.location.replace("/sort_by/"+sort);
+        }else{
+            console.log(sort)
+        }
+    });
+</script>
+<script type="text/javascript">
+    setTimeout(function(){
+        if($('#msg').length > 0){
+            $('#msg').remove();
+        }
+    }, 3000)
+</script>
+<!--/Section-->
+<script>
+    var countries = [];
+    function autocomplete(inp, arr) {
+      var currentFocus;
+      inp.addEventListener("input", function(e) {
+          var a, b, i, val = this.value;
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          this.parentNode.appendChild(a);
+          for (i = 0; i < arr.length; i++) {
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+              b = document.createElement("DIV");
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              b.addEventListener("click", function(e) {
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      inp.addEventListener("keydown", function(e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x);
+          } else if (e.keyCode == 38) {
+            currentFocus--;
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            e.preventDefault();
+            if (currentFocus > -1) {
+              if (x) x[currentFocus].click();
+            }
+          }
+      });
+      function addActive(x) {
+        if (!x) return false;
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+    }
+        document.addEventListener("click", function (e) {
+          closeAllLists(e.target);
+        });
+    }
+
+    $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+    $.ajax({
+        url: '/all_locations/',
+        method: 'get',
+
+        success: function(result){
+            // console.log(result)
+            for ( var i = 0, l = result.length; i < l; i++ ) {
+                countries.push(result[i].location)
+            }
+            // console.log(countries)
+
+        }
+    });
+
+    autocomplete(document.getElementById("myInput"), countries);
+</script>
+{% endblock %}
+
+{% block css %}
+    <!--<link href="{% static '/plugins/jquery-uislider/jquery-ui.css' %}" rel="stylesheet">-->
+{% endblock %}
+{% block js %}
+    <!--<script src="{% static '/plugins/jquery-uislider/jquery-ui.js' %}"></script>-->
+    <!--<script src="{% static '/js/custom.js' %}"></script>-->
+{% endblock %}
+
+{% block advertisement %}
+    {% include 'frontend/advertisement_block.html' %}
+{% endblock %}

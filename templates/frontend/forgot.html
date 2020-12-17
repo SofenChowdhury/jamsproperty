@@ -1,0 +1,38 @@
+
+{% extends 'layouts/base.html' %}
+{% block carousel_block %}
+    {% include 'layouts/slider.html' %}
+{% endblock %}
+
+{% block body_block %}
+<!--Forgot password-->
+<section class="sptb">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-5 col-xl-4 col-md-6 d-block mx-auto">
+				<div class="single-page w-100 p-0" >
+					<div class="wrapper wrapper2">
+						<form action="{% url 'passReset' %}" method="POST" enctype="multipart/form-data" id="forgotpsd" class="card-body">
+                            {% csrf_token %}
+							<h3 class="pb-2">Forgot password ?</h3>
+							<div class="mail">
+								<input type="email" name="mail">
+								<label>Mail or Username</label>
+							</div>
+							<div class="submit">
+								<!--<a class="btn btn-primary btn-block" href="home.html">Send</a>-->
+								<button type="submit" class="btn btn-primary btn-block">Submit</button>
+							</div>
+							<div class="text-center text-dark mb-0">
+								Forget it, <a href="#">send me back</a> to the sign in.
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--/Forgot password-->
+{% endblock %}
+

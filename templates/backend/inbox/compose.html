@@ -1,0 +1,122 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+    input:focus {
+      border: 1px solid #ec1f27 !important;
+    }
+    select:focus {
+      border: 1px solid #ec1f27 !important;
+    }
+    textarea:focus {
+      border: 1px solid #ec1f27 !important;
+    }
+</style>
+<div class="row">
+	<div class="col-md-12 col-lg-3">
+		<div class="card">
+			<div class="card-body p-0 border">
+				{% include 'layouts/mail_layout.html' %}
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12 col-lg-9">
+	    <div class="form-group">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li>
+                    <div class="alert alert-{{message.level_tag}}" id="msg">
+                        {{ message }}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+		<div class="card">
+			<div class="card-body p-6 border">
+				<div class="inbox-body">
+					<form action="{% url 'sendEmail' %}" method="POST" enctype="multipart/form-data">
+            			{% csrf_token %}
+						<div class="form-group">
+							<div class="row align-items-center">
+								<label class="col-sm-3">Sender</label>
+								<div class="col-sm-9">
+									<!--{{current_user.email}}-->
+									<input type="hidden" name="sender" value="{{current_user.email}}">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="row align-items-center">
+								<label class="col-sm-3">Recipients Groups</label>
+								<div class="col-sm-9">
+									<div class=" w-100">
+									    <!--<select id="country" name="send_to" class="form-control select2-flag-search" data-placeholder="Choose Email"  multiple>-->
+										<select class="form-control select2 " data-placeholder="Choose Email" name="send_to" multiple>
+											<option value="" selected>All Subscribers</option>
+											{% for get_user in get_users %}
+												{% if get_user.email %}
+												    <option value="{{get_user.email}}">{{get_user.email}}</option>
+												{% endif %}
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="row align-items-center">
+								<label class="col-sm-3">Subject</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="Email Subject" name="subject">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="row ">
+								<label class="col-sm-3">Message</label>
+								<div class="col-sm-9">
+									<!--<textarea class="content" name="message" placeholder="Enter Description"></textarea>-->
+									<!--<textarea class="form-control content" name="message" placeholder="Enter Description" rows="12"></textarea>-->
+									<textarea class="form-control" name="message" placeholder="Enter Description" rows="12"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="btn-list mt-4 text-right">
+							<!--<button type="button" class="btn btn-danger" data-dismiss="modal" style="float:left;">Cancel</button>-->
+							<button type="submit" class="btn btn-primary btn-space" style="background-color:#43aa8b;">Send message</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    setTimeout(function(){
+        if($('#msg').length > 0){
+            $('#msg').remove();
+        }
+    }, 3000)
+</script>
+
+{% endblock %}
+{% block css %}
+<link href="{% static 'plugins/wysiwyag/richtext.css' %}" rel="stylesheet" />
+<!-- Select2 Plugin -->
+<link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block js %}
+<!-- Data tables -->
+<!-- Custom Js-->
+<script src="{% static 'plugins/wysiwyag/jquery.richtext.js' %}"></script>
+<script src="{% static 'js/formeditor.js' %}"></script>
+<!-- Custom scroll bar Js-->
+<script src="{% static 'plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.full.min.js' %}"></script>
+
+{% endblock %}

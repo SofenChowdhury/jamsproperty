@@ -1,0 +1,177 @@
+{% extends 'layouts/base.html' %}
+{% block carousel_block %}
+    <section>
+        <div class="container">
+            <div class="row" style="margin-top: 7%;margin-left: 5px; margin-bottom:7px;">
+                <div class="btn-group btn-breadcrumb">
+                    <a href="#" class="btn btn-danger" style="background-color:#ec1f27;"><i class="glyphicon glyphicon-home"></i></a>
+                    <a href="{% url 'home' %}" class="btn btn-success" style="background-color:#1f8494;">Home</a>
+                    <a href="#" class="btn btn-default">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block body_block %}
+    <!-- Section -->
+    <section class="sptb bg-white">
+        <div class="container">
+            <div class="form-group">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li>
+                        <div class="alert alert-{{message.level_tag}}" id="msg">
+                            {{ message }}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if request.user.is_authenticated %}
+                    <div class="col-lg-6 col-xl-6 col-md-12">
+                        <form action="{% url 'send_message' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name1" placeholder="Your Name" name="name" value="{{ current_user.username }}" readonly="">
+                                        <!-- <input type="hidden" class="form-control" id="name1" placeholder="Your Name" name="id" value="{{ current_user.id }}" readonly=""> -->
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" placeholder="Email Address" name="email" value="{{ current_user.email }}" readonly="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="test" class="form-control" id="phone" placeholder="Your Phone No." name="phone" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                                    </div>
+                                    <div class="text-left">
+                                        <button type="submit" class="btn btn-primary btn-lg br-tr-3  br-br-3">
+                                            Send Message
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="col-lg-7 col-xl-7 col-md-12">
+                        <form action="{% url 'send_message' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="name1" placeholder="Your Name" name="name" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" id="email" placeholder="Your Email Address" name="email" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="test" class="form-control" id="phone" placeholder="Your Phone No." name="phone" value="" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" required="">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                                    </div>
+                                    <div class="text-left">
+                                        <button type="submit" class="btn btn-primary btn-lg br-tr-3  br-br-3">
+                                            Send Message
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+                <div class="col-md-5 col-xl-5">
+
+                    <div class="container">
+                        <h2 style="font-weight:bold;color:#ec1f27;font-family: sans-serif;">{{contacts_info.title}}</h2>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <table>
+                            <tr>
+                                <td><span class="glyphicon glyphicon-earphone one" style="width:30px;padding:10px 0px;"></span></td>
+                                <td>{{ contacts_info.phone }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="glyphicon glyphicon-envelope one" style="width:30px;padding:10px 0px;"></span></td>
+                                <td>{{ contacts_info.email }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="glyphicon glyphicon-map-marker one" style="width:30px;padding:10px 0px;"></span></td>
+                                <td>{{contacts_info.address}}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="fa fa-clock-o one" style="width:30px;padding:10px 0px;"></span></td>
+                                <td>{{contacts_info.start_time}} To {{contacts_info.end_time}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--<ul class="container details">-->
+                    <!--    <li>-->
+                    <!--        <p>-->
+                    <!--            <span class="glyphicon glyphicon-earphone one" style="width:50px;"></span>{{ contacts_info.phone }}-->
+                    <!--        </p>-->
+                    <!--    </li>-->
+                    <!--    <li>-->
+                    <!--        <p>-->
+                    <!--            <span class="glyphicon glyphicon-envelope one" style="width:50px;"></span>{{ contacts_info.email }}-->
+                    <!--        </p>-->
+                    <!--    </li>-->
+                    <!--    <li>-->
+                    <!--        <p>-->
+                    <!--            <span class="glyphicon glyphicon-map-marker one" style="width:50px;"></span>{{contacts_info.address}}-->
+                    <!--        </p>-->
+                    <!--    </li>-->
+                    <!--    <li>-->
+                    <!--        <p>-->
+                    <!--            <span class="fa fa-clock-o one" style="width:50px;"></span>{{contacts_info.start_time}} To {{contacts_info.end_time}}-->
+                    <!--        </p>-->
+                    <!--    </li>-->
+                    <!--    <li>-->
+                    <!--</ul>-->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--/Section -->
+
+    <!--Contact-->
+    <div class="sptb">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-12 col-xl-12  col-md-12">
+                    <div class="map1">
+                        <div class="map-header-layer" id="map2">
+                            <iframe width="100%" height="380" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.1800252251055!2d90.42204915074423!3d23.812196592253564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c7d5d8d5d4e1%3A0xcbd0555aa0680c7d!2sJamsproperty!5e0!3m2!1sen!2sbd!4v1583668491021!5m2!1sen!2sbd"></iframe>
+                            <!--<iframe width="100%" height="380" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.it/maps?q={{ contacts_info.address }}&output=embed"></iframe>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        setTimeout(function(){
+            if($('#msg').length > 0){
+                $('#msg').remove();
+            }
+        }, 3000)
+    </script>
+    <!--/Contact-->
+{% endblock %}
+{% block js %}
+
+{% endblock %}

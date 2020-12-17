@@ -1,0 +1,71 @@
+{% extends 'layouts/back_layout.html' %}
+{% block contants %}
+{% load static %}
+<div class="row">
+	<div class="col-md-12 col-lg-12">
+		<div class="card">
+			<div class="card-body p-6 border">
+				<div class="inbox-body">
+					<div class="">
+						<div class="row">
+						    <div class="col-md-12">
+						        <!-- Star form compose mail -->
+						        <form class="form-horizontal">
+						            <div class="panel mail-wrapper rounded shadow">
+						                <div class="panel-sub-heading inner-all">
+						                    <div class="pull-left">
+						                        <h3 class="lead no-margin">{{title}}</h3>
+						                    </div>
+						                    <div class="clearfix"></div>
+						                </div><!-- /.panel-sub-heading -->
+						                <div class="panel-sub-heading inner-all">
+						                    <div class="row">
+						                        <div class="col-md-8 col-sm-8 col-xs-7">
+						                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="..." class="img-circle senden-img" style="border-radius: 50%;border:2px solid lightgray">
+						                            <span>JamsProperty</span>
+						                        </div>
+						                        <div class="col-md-4 col-sm-4 col-xs-5">
+						                            <p class="pull-right"> {{notification.notify_time}}</p>
+						                        </div>
+						                    </div>
+						                </div><!-- /.panel-sub-heading -->
+						                <div class="panel-body">
+						                    <div class="view-mail">
+                                                <h5>Dear Sir,<h5>
+                                                <p style="font-weight:bold;">You are Notifying for <span style="color:tomato;">" {{notification.notify_for.Property_title}} "</span></p>
+
+						                        {{ notification.notify_message |safe}}
+						                    </div>
+						                </div>
+						            </div><!-- /.panel -->
+						        </form>
+						        <!--/ End form compose mail -->
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Popup Message Modal-->
+	</div>
+</div>
+{% endblock %}
+{% block css %}
+<style>
+.senden-img{
+    width:50px;
+    height:50px;
+}
+
+.panel .panel-heading .panel-title {
+    padding: 10px;
+    font-size: 17px;
+}
+
+
+</style>
+{% endblock %}
+{% block js %}
+<!-- WYSIWYG Editor js -->
+
+{% endblock %}
